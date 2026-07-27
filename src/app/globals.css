@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  background-color: #020b1c;
+  color: #e2e8f0;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+}
+
+.dashboard-shell {
+  background:
+    radial-gradient(circle at 50% 50%, #0a254d 0%, #020b1c 74%),
+    linear-gradient(rgba(18, 53, 91, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 53, 91, 0.1) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    40px 40px,
+    40px 40px;
+}
+
+.tech-panel {
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  background: rgba(10, 25, 47, 0.66);
+  box-shadow:
+    inset 0 0 15px rgba(0, 242, 255, 0.12),
+    0 0 12px rgba(0, 242, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.header-shell {
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+  background: linear-gradient(180deg, rgba(10, 37, 77, 0.9) 0%, rgba(2, 11, 28, 0) 100%);
+}
+
+.nav-chip {
+  clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+}
+
+.title-bar {
+  border-left: 4px solid #00f2ff;
+  background: linear-gradient(90deg, rgba(0, 242, 255, 0.3) 0%, transparent 100%);
+}
+
+.date-input {
+  height: 2.125rem;
+  min-width: 0;
+  width: 11rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  background: rgba(8, 145, 178, 0.24);
+  padding: 0.25rem 0.75rem;
+  color: #00f2ff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.date-input:focus {
+  border-color: #00f2ff;
+  box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.14);
+}
+
+@media (max-width: 1280px) {
+  .date-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-shell {
+    height: 100%;
+  }
+
+  .dashboard-shell {
+    min-height: 100vh;
+  }
+
+  .dashboard-shell header > div:last-child {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}

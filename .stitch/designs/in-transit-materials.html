@@ -1,0 +1,379 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>"五库一仓" 资源全景可视化 - 在途物资库</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Chart.js for data visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style data-purpose="global-styles">
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    body {
+      background-color: #020b1c;
+      background-image: 
+        radial-gradient(circle at 50% 50%, #0a254d 0%, #020b1c 100%),
+        linear-gradient(rgba(18, 53, 91, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 53, 91, 0.1) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+      color: #e2e8f0;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+
+    .tech-border {
+      border: 1px solid rgba(0, 242, 255, 0.3);
+      box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.1), 0 0 10px rgba(0, 242, 255, 0.1);
+      background: rgba(10, 25, 47, 0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    .glowing-text-cyan {
+      text-shadow: 0 0 10px rgba(0, 242, 255, 0.8);
+      color: #00f2ff;
+    }
+
+    .glowing-text-amber {
+      text-shadow: 0 0 10px rgba(255, 191, 0, 0.8);
+      color: #ffbf00;
+    }
+
+    .header-bg {
+      background: linear-gradient(180deg, rgba(10, 37, 77, 0.9) 0%, rgba(2, 11, 28, 0) 100%);
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+    }
+
+    .nav-item {
+      clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+      transition: all 0.3s ease;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(180deg, #00f2ff33, #00f2ff66);
+      border-bottom: 2px solid #00f2ff;
+    }
+
+    .card-title-bar {
+      background: linear-gradient(90deg, rgba(0, 242, 255, 0.3) 0%, transparent 100%);
+      border-left: 4px solid #00f2ff;
+    }
+  </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" data-snapdom="injected-import"></head>
+<body class="flex flex-col p-4">
+<!-- BEGIN: MainHeader -->
+<header class="relative flex flex-col items-center mb-6" data-purpose="dashboard-header">
+<div class="absolute top-0 left-0 right-0 h-20 header-bg border-b border-cyan-500/30 -z-10"></div>
+<!-- Top Nav and Title -->
+<div class="w-full flex justify-between items-center px-8 py-2">
+<nav class="flex space-x-2" data-purpose="breadcrumb-navigation">
+<div class="nav-item px-6 py-1 bg-slate-800/50 text-sm cursor-pointer hover:bg-slate-700/50">首页</div>
+<div class="nav-item active px-6 py-1 text-sm cursor-pointer">在途物资库</div>
+<div class="nav-item px-6 py-1 bg-slate-800/50 text-sm cursor-pointer hover:bg-slate-700/50">物资库</div>
+<div class="nav-item px-6 py-1 bg-slate-800/50 text-sm cursor-pointer hover:bg-slate-700/50">虚拟库</div>
+</nav>
+<div class="text-3xl font-bold tracking-widest glowing-text-cyan flex items-center">
+<span class="opacity-50 mx-4">◀</span>
+        "五库一仓" 资源全景可视化
+        <span class="opacity-50 mx-4">▶</span>
+</div>
+<div class="flex items-center space-x-4">
+<nav class="flex space-x-2">
+<div class="nav-item px-6 py-1 bg-slate-800/50 text-sm cursor-pointer hover:bg-slate-700/50">项目现场库</div>
+<div class="nav-item px-6 py-1 bg-slate-800/50 text-sm cursor-pointer hover:bg-slate-700/50">综合材料站</div>
+<div class="nav-item px-6 py-1 bg-slate-800/50 text-sm cursor-pointer hover:bg-slate-700/50">专业仓</div>
+</nav>
+<div class="text-cyan-400 font-mono text-sm ml-4" id="real-time-clock">星期六 14:22:16</div>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<section class="tech-border mb-4 p-4 flex items-center justify-between gap-6" data-purpose="data-query-bar"><div class="flex flex-1 gap-6"><div class="flex flex-col gap-1"><label class="text-xs text-slate-400 ml-1">合同生效时间范围</label><div class="flex items-center gap-2"><input type="date" class="bg-cyan-900/40 border border-cyan-500/30 rounded px-3 py-1 text-sm text-cyan-400 focus:outline-none focus:border-cyan-400 w-40"><span class="text-slate-400">-</span><input type="date" class="bg-cyan-900/40 border border-cyan-500/30 rounded px-3 py-1 text-sm text-cyan-400 focus:outline-none focus:border-cyan-400 w-40"></div></div><div class="flex flex-col gap-1"><label class="text-xs text-slate-400 ml-1">确认交货期范围</label><div class="flex items-center gap-2"><input type="date" class="bg-cyan-900/40 border border-cyan-500/30 rounded px-3 py-1 text-sm text-cyan-400 focus:outline-none focus:border-cyan-400 w-40"><span class="text-slate-400">-</span><input type="date" class="bg-cyan-900/40 border border-cyan-500/30 rounded px-3 py-1 text-sm text-cyan-400 focus:outline-none focus:border-cyan-400 w-40"></div></div><div class="flex flex-col gap-1"><label class="text-xs text-slate-400 ml-1">实际交货期范围</label><div class="flex items-center gap-2"><input type="date" class="bg-cyan-900/40 border border-cyan-500/30 rounded px-3 py-1 text-sm text-cyan-400 focus:outline-none focus:border-cyan-400 w-40"><span class="text-slate-400">-</span><input type="date" class="bg-cyan-900/40 border border-cyan-500/30 rounded px-3 py-1 text-sm text-cyan-400 focus:outline-none focus:border-cyan-400 w-40"></div></div><div class="flex flex-col gap-1"><label class="text-xs text-slate-400 ml-1">订单类别</label><div class="flex items-center gap-4 h-full py-1"><label class="flex items-center gap-2 cursor-pointer group"><input type="checkbox" checked="" class="w-4 h-4 rounded border-cyan-500/50 bg-cyan-900/40 text-cyan-400 focus:ring-0 focus:ring-offset-0"><span class="text-sm text-cyan-400 group-hover:text-white transition-colors">批次订单</span></label><label class="flex items-center gap-2 cursor-pointer group"><input type="checkbox" checked="" class="w-4 h-4 rounded border-cyan-500/50 bg-cyan-900/40 text-cyan-400 focus:ring-0 focus:ring-offset-0"><span class="text-sm text-cyan-400 group-hover:text-white transition-colors">电商订单</span></label></div></div></div><div class="flex items-end gap-3 h-full pb-1"><button class="px-6 py-1.5 bg-cyan-500/20 border border-cyan-500/50 rounded text-cyan-400 text-sm font-bold hover:bg-cyan-500/40 transition-colors">查询</button><button class="px-6 py-1.5 bg-slate-800/50 border border-slate-600 rounded text-slate-400 text-sm hover:bg-slate-700/50 transition-colors">重置</button></div></section><main class="flex-1 grid grid-cols-4 grid-rows-3 gap-4 overflow-hidden">
+<!-- BEGIN: TopStats -->
+<!-- Card 1: Annual Order Gen -->
+<section class="tech-border p-4 flex flex-col justify-between" data-purpose="stat-card">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        年度订单生成情况
+      </div>
+<div class="flex-1 flex items-center justify-around mt-2">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-cyan-900/40 rounded-full border border-cyan-500/50">
+<img alt="order icon" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkf7rZdmxTMrJ8YXYAcJEWigyoKsHpf0r_io76PP_GOSQibMcv9UbpICcnvCkzsrChjsnhd63RmLJB8CefRgMji5l32QsN6Gh7NFG9rJSQ4fU_9aZA9bqJVfSZAa3DPKKoVGF1UWaBuSKm3YAqBQlTrncDzKKtTdmXBrF26YBQib7tUgLU3BImmTBqBeOh2MlGLcn73H8gdn6Mhfr6NCLBMDWQtljJc3fqgYFbPxeSxvZkGa7rJgPakObwDwbD2hTdHBRO1J-YbTer">
+</div>
+<div>
+<div class="text-slate-400 text-xs">批次订单</div>
+<div class="text-2xl font-bold glowing-text-cyan">3961 <span class="text-sm">条</span></div>
+</div>
+</div>
+<div class="text-2xl font-bold glowing-text-amber">23.43 <span class="text-sm">亿</span></div>
+</div>
+<div class="flex-1 flex items-center justify-around">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-blue-900/40 rounded-full border border-blue-500/50">
+<img alt="ecommerce icon" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGDKSzMq-IYpbq9FMWxAicqRiMMtVq4gcsdffLF1eUoLOLk5cKiW_DWjCrrPtQ9p6WfErE5MlWdwxRGS8MPx8Rs4Udy4rYrGISs0tdYaulRn9mJVIVX3gHeYwXiGLhinVodSZKLU3vLLM1CflrhC7QzsFTa_7d3S4P42Y0YA-N-21Kb1sN96o-bOHUNH_kdan3fb36epMIAONoqpKuY_X8uyq4ptCgLcPCMQODwCbFa0GCZcV406zuK-pYWfmVwzq0c2stYeqQsS6q">
+</div>
+<div>
+<div class="text-slate-400 text-xs">电商订单</div>
+<div class="text-2xl font-bold glowing-text-cyan">6596 <span class="text-sm">条</span></div>
+</div>
+</div>
+<div class="text-2xl font-bold glowing-text-amber">16.81 <span class="text-sm">亿</span></div>
+</div>
+</section>
+<!-- Card 2: Delivery Confirmation -->
+<section class="tech-border p-4 flex flex-col justify-between" data-purpose="stat-card">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        年度订单交货期确认情况
+      </div>
+<div class="flex-1 flex flex-col justify-center gap-4 px-4">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<img alt="check icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnYcaRsL4pNtRo_X3bDc8E4ZPaSoofNWiaAS7ZTJ7dV9-gXBLjJaZuZTeS7l7Yu_RBoWJA_xhA6fhlMBDIKMxsKayMsaS6M2QnTehtLyJoUZh-6a3NJCbyUxb2ZQrrZUiuTbp9CL6X6HFwZAkeyeYELC9H2qytyyohTUXApqVoip8oQKlteHFdVvxqxsEVMEHAsaiFK8xQzH8sj9Xj8Hgn5x9tkWHWS2O-Ulz1PbpJ-a78fUCVUNHQVHjSMoBKH_DN9ZYxgwBJQDbb">
+<span class="text-xs text-slate-400">批次订单数量</span>
+</div>
+<span class="text-xl font-bold glowing-text-cyan">2847 <small>条</small></span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<img alt="money icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjDuvS--7UAIzcZF5dd6t6lHpR0m1JBcoHxggpAwMyiDF4bMDHBndiLgEhY0YChBVACYPK0QWvzaLEn_wvN9brKjeDM57lGrXPHwrgS1Ugz-we_X-F2KptjsiwGUTrV-sAE7GnZslV5ow5B2NS5jjeD4CPlIBW6DaWg5bP8rPL1LcNaH9fd5C-t5fW1YaRS8Q4w3Jb6N_7OmuhJLgPEOY2_1ewXSO8IA7NWuB4_l__YsWtgGAsgPxM0tO48b47f9clqoaNIR2E7ckw">
+<span class="text-xs text-slate-400">批次订单金额</span>
+</div>
+<span class="text-xl font-bold glowing-text-amber">15.36 <small>亿</small></span>
+</div>
+</div>
+</section>
+<!-- Card 3: Dispatched Stats -->
+<section class="tech-border p-4 flex flex-col justify-between" data-purpose="stat-card">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        年度订单已发货情况
+      </div>
+<div class="flex-1 flex flex-col justify-center gap-4 px-4">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<img alt="truck icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhfXTlPlQZKSC_NMB9QkIOzkedR9CNgTHydrNnuiWpPwSnWxGCtY7qOOZ1oeqcrkJK4G8AKDMFBBTI0YXbKXNyuE3fz09SmDI37dkdTNvUc8p-X0WA81LtqpvFIQjIISB--DI3DPlWncCqhlmcJQ2KH4JEu3F9wKtTPEJuoamL-aXb8WBQwk5tFCqHB-w9C2xg4rFjXmvvggY0FWxY5BrVMw_RdoztMlE4K0aXF_FyGhSgCrLOG85HpuexctWWIDOthzPTaeTZX4pG">
+<span class="text-xs text-slate-400">批次订单数量</span>
+</div>
+<span class="text-xl font-bold glowing-text-cyan">1624 <small>条</small></span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<img alt="notes icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpLJ27-YTCKK68sPEfqDwI-10WFh34YJRSqI9czcuTmP0hJZpO6klY_2bZ4QtfalbOCjIPEp15efzgLVD7YLZEePE97USE8S4qSa2yNhZx7sYlYGDRr2t6W5X5t3GPgYhG5snNqSsFgiDMqNzdBXeAtn9-_ZByih5-C09vc14sBu9sxS0cxFCGPKEyNe55a8im3C1kPTJ7NC6K4dubpBh8T-e8jSfwLiibazElir50kuc_ux1Oi3JPWT5k1kVjXdZxaWu71HCVzOhW">
+<span class="text-xs text-slate-400">批次订单金额</span>
+</div>
+<span class="text-xl font-bold glowing-text-amber">9.74 <small>亿</small></span>
+</div>
+</div>
+</section>
+<!-- Card 4: Receipt Stats -->
+<section class="tech-border p-4 flex flex-col justify-between" data-purpose="stat-card">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        年度订单收货情况
+      </div>
+<div class="flex-1 flex items-center justify-around mt-2">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-cyan-900/40 rounded-full border border-cyan-500/50">
+<img alt="box icon" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8JCdkQhCVKrnodWFi_jkaRnVp62LHb0iKJTuI6L4FOYRQK3pRegs-KakfqNLnMFYCx6uI_DeA3j541HQnTTUw69WVa4KXUoqnfSN41TrkLnPZN4kQbdSkYuIV-Iy39cKHVB_Nl_tO8rkdRLW_AqbzM6Sir5lmFQUKOje4gaukgEHDnpdkORMJEhX0G9wzOdAbcbxY_lHl9akMfhxbbhVrpDYT05x3QISqjab05tPGSZUHdMV3L6pscTpn25427lQw713GrcdYlOWU">
+</div>
+<div>
+<div class="text-slate-400 text-xs">批次订单</div>
+<div class="text-xl font-bold glowing-text-cyan">1287 <span class="text-sm">条</span></div>
+</div>
+</div>
+<div class="text-xl font-bold glowing-text-amber">7.48 <span class="text-sm">亿</span></div>
+</div>
+<div class="flex-1 flex items-center justify-around">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-blue-900/40 rounded-full border border-blue-500/50">
+<img alt="store icon" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrLPan_ati89PE30TQ-zewYmOYmfiaQhDp5amuR_QOKfrdWN3fYwSsaE_sIfZSJ1aNbV-zjPnDouhKTM1_brLz5tIL8ltYh47UyeDZukfqOoO_-tATCC-NX7LuMnANWWtFwBC-1tyQsVFUJ5KeorYSkkMNMuc_y3C14oijp23cw7vNO2cMf-2IThQ1-Adk8zfYAFdpY3Gq9e6kevcSOUINAltt5b4wYpM1uPETOCTpviu-BB5cEuV4eKL4-geNtpGdtbqXz12BVI9K">
+</div>
+<div>
+<div class="text-slate-400 text-xs">电商订单</div>
+<div class="text-xl font-bold glowing-text-cyan">2587 <span class="text-sm">条</span></div>
+</div>
+</div>
+<div class="text-xl font-bold glowing-text-amber">10.34 <span class="text-sm">亿</span></div>
+</div>
+</section>
+<!-- END: TopStats -->
+<!-- BEGIN: MiddleCharts -->
+<!-- Chart: Provincial Key Material -->
+<section class="col-span-2 tech-border p-4 flex flex-col" data-purpose="main-chart-container">
+<div class="flex justify-between items-center mb-4">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+          全省重点物资在途情况
+        </div>
+<div class="flex space-x-2">
+<span class="px-3 py-0.5 text-xs bg-cyan-900/60 border border-cyan-500/50 rounded cursor-pointer">主网</span>
+<span class="px-3 py-0.5 text-xs bg-slate-800/60 border border-slate-600 rounded cursor-pointer opacity-50">配网</span>
+</div>
+</div>
+<div class="flex-1 relative">
+<canvas id="key-material-chart" width="1719" height="420" style="display: block; box-sizing: border-box; height: 210px; width: 859.5px;"></canvas>
+</div>
+</section>
+<!-- Chart: Engineering Type -->
+<section class="col-span-2 tech-border p-4 flex flex-col" data-purpose="main-chart-container">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2 mb-4">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        全省在途物资工程类型分布情况
+      </div>
+<div class="flex-1 relative">
+<canvas id="engineering-type-chart" width="1719" height="420" style="display: block; box-sizing: border-box; height: 210px; width: 859.5px;"></canvas>
+</div>
+</section>
+<!-- END: MiddleCharts -->
+<!-- BEGIN: BottomCharts -->
+<!-- Chart: Time Distribution -->
+<section class="col-span-2 tech-border p-4 flex flex-col" data-purpose="bottom-chart-container">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2 mb-4">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        年度在途物资计划交货时间分布情况
+      </div>
+<div class="flex-1 relative">
+<canvas id="time-distribution-chart" width="1719" height="420" style="display: block; box-sizing: border-box; height: 210px; width: 859.5px;"></canvas>
+</div>
+</section>
+<!-- Chart: Status by Unit -->
+<section class="col-span-2 tech-border p-4 flex flex-col" data-purpose="bottom-chart-container">
+<div class="card-title-bar px-3 py-1 text-sm font-bold flex items-center gap-2 mb-4">
+<span class="w-2 h-2 bg-cyan-400 animate-pulse"></span>
+        各单位在途物资情况
+      </div>
+<div class="flex-1 relative">
+<canvas id="unit-status-chart" width="1719" height="420" style="display: block; box-sizing: border-box; height: 210px; width: 859.5px;"></canvas>
+</div>
+</section>
+<!-- END: BottomCharts -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="mt-4 flex justify-center" data-purpose="footer-decor">
+<div class="w-1/3 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
+</footer>
+<!-- END: Footer -->
+<!-- JavaScript for Data Viz and UI -->
+<script data-purpose="canvas-setup">
+    // Mock Chart Configuration Helper
+    const createBarChart = (id, labels, data1, data2) => {
+      const ctx = document.getElementById(id).getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '到货金额 (万元)',
+              data: data1,
+              backgroundColor: '#00f2ff',
+              borderRadius: 2,
+              barThickness: 15
+            },
+            {
+              label: '在途金额 (万元)',
+              data: data2,
+              backgroundColor: '#ffbf00',
+              borderRadius: 2,
+              barThickness: 15
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              align: 'end',
+              labels: { color: '#94a3b8', boxWidth: 10, font: { size: 10 } }
+            }
+          },
+          scales: {
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+    };
+
+    // Initialize Charts
+    window.onload = () => {
+      // Key Material Bar Chart
+      createBarChart('key-material-chart', 
+        ['交流变压器', '组合电器', '导、地线', '铁塔', '电抗器', '电缆', '隔离开关', '绝缘子'],
+        [400, 550, 320, 580, 250, 400, 280, 310],
+        [380, 320, 280, 300, 310, 360, 270, 340]
+      );
+
+      // Engineering Type Bar Chart
+      createBarChart('engineering-type-chart',
+        ['主网工程', '配网工程', '技改和大修', '营销工程', '调控和信通', '实物储备'],
+        [320, 390, 550, 180, 280, 540],
+        [450, 200, 360, 280, 180, 160]
+      );
+
+      // Time Distribution Line Chart
+      const lineCtx = document.getElementById('time-distribution-chart').getContext('2d');
+      new Chart(lineCtx, {
+        type: 'line',
+        data: {
+          labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          datasets: [
+            {
+              label: '到货金额',
+              data: [80, 140, 100, 300, 360, 170, 140, 270, 370, 140, 80, 480],
+              borderColor: '#00f2ff',
+              backgroundColor: 'rgba(0, 242, 255, 0.1)',
+              tension: 0.4,
+              fill: true,
+              pointStyle: 'circle',
+              pointRadius: 4
+            },
+            {
+              label: '在途金额',
+              data: [480, 410, 330, 200, 240, 370, 300, 80, 240, 340, 320, 230],
+              borderColor: '#ffbf00',
+              backgroundColor: 'rgba(255, 191, 0, 0.1)',
+              tension: 0.4,
+              fill: true,
+              pointStyle: 'circle',
+              pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top', align: 'end', labels: { color: '#94a3b8', boxWidth: 10 } }
+          },
+          scales: {
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // Unit Status Grouped Bar Chart
+      createBarChart('unit-status-chart',
+        ['沈阳', '大连', '鞍山', '抚顺', '本溪', '丹东', '锦州', '营口', '阜新', '辽阳', '盘锦', '铁岭'],
+        [320, 540, 380, 570, 150, 550, 280, 400, 180, 260, 200, 300],
+        [240, 280, 250, 220, 270, 240, 240, 200, 420, 300, 350, 360]
+      );
+    };
+
+    // Real-time Clock
+    setInterval(() => {
+      const now = new Date();
+      const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      const timeStr = `${days[now.getDay()]} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+      document.getElementById('real-time-clock').innerText = timeStr;
+    }, 1000);
+  </script>
+
+
+</body></html>

@@ -1,0 +1,24 @@
+{
+  "projectId": "local-stitch-export",
+  "title": "\"五库一仓\" 资源全景可视化 - 在途物资库",
+  "deviceType": "desktop-dashboard",
+  "Last Sync Time": "2026-07-25T06:47:14Z",
+  "syncNote": "Stitch MCP get_screen/get_project tools were not available in this Codex session. Local files from stitch_/code.html and stitch_/screen.png were archived and used as the design source.",
+  "screens": {
+    "in-transit-materials": {
+      "id": "local-stitch-export-in-transit-materials",
+      "label": "在途物资库",
+      "sourceScreen": "stitch_/screen.png",
+      "dimensions": {
+        "width": 2048,
+        "height": 1168
+      },
+      "canvasPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "html": ".stitch/designs/in-transit-materials.html",
+      "screenshot": ".stitch/designs/in-transit-materials.png"
+    }
+  }
+}
