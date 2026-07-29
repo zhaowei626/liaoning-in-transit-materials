@@ -3,7 +3,8 @@ import type {
   DateRangeFilter,
   NavigationItem,
   OrderTypeFilter,
-  StatCardData
+  StatCardData,
+  UnitFilter
 } from "@/types/dashboard";
 
 export const dashboardTitle = "\"五库一仓\" 资源全景可视化";
@@ -29,9 +30,24 @@ export const initialDateFilters: DateRangeFilter[] = [
 ];
 
 export const initialOrderTypes: OrderTypeFilter[] = [
-  { id: "batch", label: "批次订单", checked: true },
-  { id: "ecommerce", label: "电商订单", checked: true }
+  { id: "all", label: "全部" },
+  { id: "batch", label: "批次订单" },
+  { id: "ecommerce", label: "电商订单" }
 ];
+
+export const initialSelectedOrderType: OrderTypeFilter["id"] = "all";
+
+export const unitFilters: UnitFilter[] = [
+  { id: "all", label: "全部" },
+  { id: "shenyang", label: "沈阳" },
+  { id: "dalian", label: "大连" },
+  { id: "anshan", label: "鞍山" },
+  { id: "fushun", label: "抚顺" },
+  { id: "materials-company", label: "物资公司" },
+  { id: "xintong-company", label: "信通公司" }
+];
+
+export const initialSelectedUnit: UnitFilter["id"] = "all";
 
 export const queryActions = {
   search: "查询",
@@ -90,7 +106,7 @@ export const statCards: StatCardData[] = [
     layout: "horizontal-bar",
     metrics: [
       { id: "unconfirmed", label: "未确认交货期", value: "2.15", unit: "亿", subValue: "360", subUnit: "条", tone: "cyan", icon: "fileStack" },
-      { id: "undispatched", label: "未发货", value: "5.30", unit: "亿", subValue: "888", subUnit: "条", tone: "cyan", icon: "packageBox" },
+      { id: "undispatched", label: "已确认交货期但未发货", value: "5.30", unit: "亿", subValue: "888", subUnit: "条", tone: "cyan", icon: "packageBox" },
       { id: "dispatched-transit", label: "已发货", value: "8.50", unit: "亿", subValue: "1,426", subUnit: "条", tone: "cyan", icon: "truck" }
     ]
   },
@@ -123,8 +139,7 @@ export const chartPanels: ChartPanelData[] = [
       labels: cityNames,
       labelLinks: cityLabelLinks,
       datasets: [
-        { label: "批次订单在途金额", data: [240, 280, 250, 220, 270, 240, 240, 200, 420, 300, 350, 360], tone: "cyan" },
-        { label: "电商订单在途金额", data: [80, 260, 130, 350, 110, 310, 40, 200, 140, 220, 160, 260], tone: "cyan" },
+        { label: "在途金额", data: [320, 540, 380, 570, 380, 550, 280, 400, 560, 520, 510, 620], tone: "cyan" },
         { label: "到货金额", data: [320, 540, 380, 570, 150, 550, 280, 400, 180, 260, 200, 300], tone: "amber" },
         { label: "省公司平均在途率", data: [57.7, 57.7, 57.7, 57.7, 57.7, 57.7, 57.7, 57.7, 57.7, 57.7, 57.7, 57.7], tone: "amber", type: "line", yAxisID: "y1" },
         { label: "各地市在途率", data: [50.0, 50.0, 50.0, 50.0, 71.7, 50.0, 50.0, 50.0, 75.7, 66.7, 71.8, 67.4], tone: "cyan", type: "line", yAxisID: "y1" }
@@ -161,7 +176,7 @@ export const chartPanels: ChartPanelData[] = [
       labels: ["交流变压器", "组合电器", "导、地线", "铁塔", "电抗器", "电缆", "隔离开关", "绝缘子"],
       datasets: [
         { label: "未确认交货期金额", data: [80, 100, 60, 90, 50, 80, 40, 70], tone: "cyan" },
-        { label: "未发货金额", data: [120, 90, 100, 110, 80, 120, 90, 100], tone: "cyan" },
+        { label: "已确认交货期但未发货金额", data: [120, 90, 100, 110, 80, 120, 90, 100], tone: "cyan" },
         { label: "已发货金额", data: [100, 80, 70, 60, 90, 110, 80, 90], tone: "cyan" },
         { label: "到货金额", data: [400, 550, 320, 580, 250, 400, 280, 310], tone: "amber" }
       ]
@@ -318,15 +333,45 @@ function createCityScopedPanel(panel: ChartPanelData, cityName: string, cityInde
     }));
 
   const summary = panel.id === "long-term-unexecuted" ? undefined : panel.summary;
+  
+  // Suppliers data for Top10
+  const suppliers = panel.id === "unit-status" ? [
+     { rank: 1, name: "国网供电公司第一分包商", amount: "1,240.00" },
+     { rank: 2, name: "沈阳电力设备制造有限公司", amount: "1,080.00" },
+     { rank: 3, name: "辽宁正泰电缆销售有限公司", amount: "950.00" },
+     { rank: 4, name: "大连互感器集团有限公司", amount: "820.00" },
+     { rank: 5, name: "国网物资集团华北分公司", amount: "760.00" },
+     { rank: 6, name: "特变电工沈阳变压器集团", amount: "640.00" },
+     { rank: 7, name: "青岛汉缆股份有限公司", amount: "520.00" },
+     { rank: 8, name: "正泰电气股份有限公司", amount: "480.00" },
+     { rank: 9, name: "西安西电开关电气有限公司", amount: "350.00" },
+     { rank: 10, name: "山东电工电气集团有限公司", amount: "280.00" }
+   ] : undefined;
+
   const metricCards = panel.id === "unit-status"
-    ? createUnitStatusMetricCards(panel, cityIndex)
+    ? undefined
     : panel.id === "long-term-unexecuted"
-      ? createLongTermMetricCards(panel, cityIndex)
+      ? undefined
       : panel.metricCards;
+
+  const layout = panel.id === "unit-status" 
+    ? "supplier-top" 
+    : panel.id === "long-term-unexecuted" 
+      ? "horizontal-bar" 
+      : undefined;
+
+  const className = panel.id === "unit-status" ? "min-h-[17rem]" : undefined;
+
+  const metrics = panel.id === "long-term-unexecuted" ? [
+    { id: "1-3y", label: "1年至3年", value: "820.00", unit: "万元", subValue: "120", subUnit: "条", tone: "cyan" as const, icon: "fileStack" as const },
+    { id: "3-5y", label: "3年至5年", value: "450.00", unit: "万元", subValue: "85", subUnit: "条", tone: "cyan" as const, icon: "fileStack" as const },
+    { id: "5y+", label: "5年以上", value: "180.00", unit: "万元", subValue: "35", subUnit: "条", tone: "cyan" as const, icon: "fileStack" as const }
+  ] : undefined;
+
   const title = panel.id === "unit-status"
-    ? "本市在途率情况"
+    ? "Top10供应商在途金额"
     : panel.id === "long-term-unexecuted"
-      ? "长期未执行合同"
+      ? "长期未执行合同分布情况"
       : panel.title;
 
   return {
@@ -334,6 +379,10 @@ function createCityScopedPanel(panel: ChartPanelData, cityName: string, cityInde
     title,
     metricCards,
     summary,
+    layout,
+    metrics,
+    suppliers,
+    className,
     chart: {
       ...chartWithoutLinks,
       labels: [cityName],

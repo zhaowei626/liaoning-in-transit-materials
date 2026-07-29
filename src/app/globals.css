@@ -74,7 +74,27 @@ body {
   outline: none;
 }
 
-.date-input:focus {
+.select-input {
+  height: 2.125rem;
+  min-width: 0;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  background: rgba(8, 145, 178, 0.24);
+  padding: 0.25rem 2rem 0.25rem 0.75rem;
+  color: #00f2ff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.select-input option {
+  background: #04142b;
+  color: #e2e8f0;
+}
+
+.date-input:focus,
+.select-input:focus {
   border-color: #00f2ff;
   box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.14);
 }
@@ -98,4 +118,22 @@ body {
     grid-template-columns: 1fr;
     justify-items: center;
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.3);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 255, 0.3);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 255, 0.5);
 }

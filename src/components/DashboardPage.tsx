@@ -29,20 +29,24 @@ export function DashboardPage({ panels = chartPanels, cards = statCards, backHre
         backHref={backHref}
         backLabel={backLabel}
         createDateChangeHandler={filters.createDateChangeHandler}
-        createOrderTypeHandler={filters.createOrderTypeHandler}
         dateFilters={filters.dateFilters}
+        onOrderTypeChange={filters.handleOrderTypeChange}
         onReset={filters.handleReset}
         onSearch={filters.handleSubmit}
+        onUnitChange={filters.handleUnitChange}
         orderTypes={filters.orderTypes}
         resetLabel={queryActions.reset}
         searchLabel={queryActions.search}
+        selectedOrderType={filters.selectedOrderType}
+        selectedUnit={filters.selectedUnit}
+        unitOptions={filters.unitOptions}
       />
       <main className="grid auto-rows-[minmax(13.5rem,auto)] grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
           <StatCard card={card} key={card.id} />
         ))}
         {panels.map((panel) => (
-          <div className={`min-h-[17rem] ${panel.span === "full" ? "xl:col-span-4" : "xl:col-span-2"}`} key={panel.id}>
+          <div className={`${panel.className ?? "min-h-[17rem]"} ${panel.span === "full" ? "xl:col-span-4" : "xl:col-span-2"}`} key={panel.id}>
             <ChartPanel panel={panel} />
           </div>
         ))}

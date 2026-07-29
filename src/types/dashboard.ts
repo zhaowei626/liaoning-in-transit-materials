@@ -25,9 +25,13 @@ export interface DateRangeFilter {
 }
 
 export interface OrderTypeFilter {
-  id: "batch" | "ecommerce";
+  id: "all" | "batch" | "ecommerce";
   label: string;
-  checked: boolean;
+}
+
+export interface UnitFilter {
+  id: "all" | "shenyang" | "dalian" | "anshan" | "fushun" | "materials-company" | "xintong-company";
+  label: string;
 }
 
 export interface MetricItem {
@@ -71,11 +75,21 @@ export interface PanelMetricCard {
   tone: MetricTone;
 }
 
+export interface SupplierItem {
+  rank: number;
+  name: string;
+  amount: string;
+}
+
 export interface ChartPanelData {
   id: string;
   title: string;
   type: "bar" | "line";
   span?: "half" | "full";
+  layout?: "chart" | "horizontal-bar" | "supplier-top";
+  className?: string;
+  metrics?: MetricItem[];
+  suppliers?: SupplierItem[];
   chart: ChartDataSet;
   tabs?: NavigationItem[];
   stacked?: boolean;

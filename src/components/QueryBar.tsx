@@ -1,5 +1,5 @@
 import type { ChangeEventHandler } from "react";
-import type { DateRangeFilter, OrderTypeFilter } from "@/types/dashboard";
+import type { DateRangeFilter, OrderTypeFilter, UnitFilter } from "@/types/dashboard";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -7,13 +7,17 @@ export interface QueryBarProps
   extends Readonly<{
     dateFilters: DateRangeFilter[];
     orderTypes: OrderTypeFilter[];
+    selectedOrderType: OrderTypeFilter["id"];
+    unitOptions: UnitFilter[];
+    selectedUnit: UnitFilter["id"];
     searchLabel: string;
     resetLabel: string;
     createDateChangeHandler: (
       id: DateRangeFilter["id"],
       field: "start" | "end"
     ) => ChangeEventHandler<HTMLInputElement>;
-    createOrderTypeHandler: (id: OrderTypeFilter["id"]) => ChangeEventHandler<HTMLInputElement>;
+    onOrderTypeChange: ChangeEventHandler<HTMLSelectElement>;
+    onUnitChange: ChangeEventHandler<HTMLSelectElement>;
     onSearch: () => void;
     onReset: () => void;
     backHref?: string;
@@ -23,10 +27,14 @@ export interface QueryBarProps
 export function QueryBar({
   dateFilters,
   orderTypes,
+  selectedOrderType,
+  unitOptions,
+  selectedUnit,
   searchLabel,
   resetLabel,
   createDateChangeHandler,
-  createOrderTypeHandler,
+  onOrderTypeChange,
+  onUnitChange,
   onSearch,
   onReset,
   backHref,
@@ -34,7 +42,7 @@ export function QueryBar({
 }: QueryBarProps) {
   return (
     <section className="tech-panel mb-4 flex items-end justify-between gap-6 p-4">
-      <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-[repeat(3,minmax(16rem,1fr))_minmax(16rem,auto)]">
+      <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-[max-content_max-content_10rem_10rem]">
         {dateFilters.map((filter) => (
           <div className="flex flex-col gap-1" key={filter.id}>
             <label className="ml-1 text-xs text-inkMuted dark:text-inkMuted">{filter.label}</label>
@@ -56,22 +64,29 @@ export function QueryBar({
           </div>
         ))}
         <div className="flex flex-col gap-1">
-          <span className="ml-1 text-xs text-inkMuted dark:text-inkMuted">订单类别</span>
-          <div className="flex h-full flex-wrap items-center gap-4 py-1">
+          <label className="ml-1 text-xs text-inkMuted dark:text-inkMuted" htmlFor="order-type-filter">订单类型</label>
+          <select
+            className="select-input"
+            id="order-type-filter"
+            onChange={onOrderTypeChange}
+            value={selectedOrderType}
+          >
             {orderTypes.map((orderType) => (
-              <label className="group flex cursor-pointer items-center gap-2" key={orderType.id}>
-                <input
-                  checked={orderType.checked}
-                  className="h-4 w-4 rounded border-cyanLine bg-cyanSoft text-cyanCore focus:ring-0 focus:ring-offset-0 dark:border-cyanLine dark:bg-cyanSoft dark:text-cyanCore"
-                  onChange={createOrderTypeHandler(orderType.id)}
-                  type="checkbox"
-                />
-                <span className="text-sm font-semibold text-cyanCore transition-colors group-hover:text-white dark:text-cyanCore dark:group-hover:text-white">
-                  {orderType.label}
-                </span>
-              </label>
+              <option key={orderType.id} value={orderType.id}>
+                {orderType.label}
+              </option>
             ))}
-          </div>
+          </select>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="ml-1 text-xs text-inkMuted dark:text-inkMuted" htmlFor="unit-filter">单位</label>
+          <select className="select-input" id="unit-filter" onChange={onUnitChange} value={selectedUnit}>
+            {unitOptions.map((unit) => (
+              <option key={unit.id} value={unit.id}>
+                {unit.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div className="flex shrink-0 items-end gap-3 pb-1">

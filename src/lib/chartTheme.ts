@@ -18,16 +18,20 @@ export function createBarChartData(chart: ChartDataSet) {
     labels: chart.labels,
     datasets: chart.datasets.map((dataset, idx) => {
       if (dataset.type === "line") {
+        const isProvinceRate = dataset.label === "省公司平均在途率";
+        const isCityRate = dataset.label === "各地市在途率";
+        
         return {
           type: "line" as const,
           label: dataset.label,
           data: dataset.data,
-          borderColor: dataset.tone === "cyan" ? "#00f2ff" : "#ffbf00",
-          backgroundColor: dataset.tone === "cyan" ? "#00f2ff" : "#ffbf00",
+          borderColor: isProvinceRate ? "rgba(255, 191, 0, 0.6)" : (dataset.tone === "cyan" ? "#00f2ff" : "#ffbf00"),
+          backgroundColor: isProvinceRate ? "rgba(255, 191, 0, 0.6)" : (dataset.tone === "cyan" ? "#00f2ff" : "#ffbf00"),
           borderWidth: 2,
+          borderDash: isProvinceRate ? [5, 5] : undefined,
           tension: 0.4,
           fill: false,
-          pointStyle: "circle",
+          pointStyle: isProvinceRate || isCityRate ? "rectRot" : "circle",
           pointRadius: 4,
           yAxisID: dataset.yAxisID
         };
@@ -55,7 +59,8 @@ export function createBarChartData(chart: ChartDataSet) {
         borderWidth: toneCount > 1 ? 1 : 0, // Add border to distinguish stacked segments
         borderRadius: 2,
         barThickness: 15,
-        yAxisID: dataset.yAxisID
+        yAxisID: dataset.yAxisID,
+        pointStyle: "rect"
       };
     })
   };
@@ -99,7 +104,8 @@ export const barChartOptions: ChartOptions<"bar"> = {
       labels: {
         color: "#94a3b8",
         boxWidth: 10,
-        font: { size: 10 }
+        font: { size: 10 },
+        usePointStyle: true
       }
     },
     tooltip: {

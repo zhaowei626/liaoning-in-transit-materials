@@ -4,6 +4,9 @@ import { SectionTitle } from "@/components/SectionTitle";
 import { TechPanel } from "@/components/TechPanel";
 import type { ChartPanelData, PanelMetricCard } from "@/types/dashboard";
 
+import { HorizontalBarStat } from "@/components/HorizontalBarStat";
+import { SupplierTopList } from "@/components/SupplierTopList";
+
 export interface ChartPanelProps
   extends Readonly<{
     panel: ChartPanelData;
@@ -11,9 +14,11 @@ export interface ChartPanelProps
 
 export function ChartPanel({ panel }: ChartPanelProps) {
   const hasMetricCards = Boolean(panel.metricCards?.length);
+  const isHorizontalBar = panel.layout === "horizontal-bar";
+  const isSupplierTop = panel.layout === "supplier-top";
 
   return (
-    <TechPanel className="flex min-h-[16rem] flex-col p-4">
+    <TechPanel className={`flex ${panel.className ? "min-h-full" : "min-h-[16rem]"} flex-col p-4`}>
       <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-6">
           <SectionTitle className="min-w-0" title={panel.title} />
@@ -29,7 +34,7 @@ export function ChartPanel({ panel }: ChartPanelProps) {
             </div>
           ) : null}
         </div>
-        {panel.tabs && !hasMetricCards ? (
+        {panel.tabs && !hasMetricCards && !isHorizontalBar && !isSupplierTop ? (
           <div className="flex shrink-0 gap-2">
             {panel.tabs.map((tab) => (
               <Link
@@ -47,7 +52,13 @@ export function ChartPanel({ panel }: ChartPanelProps) {
           </div>
         ) : null}
       </div>
-      {hasMetricCards ? (
+      {isSupplierTop ? (
+        <SupplierTopList suppliers={panel.suppliers ?? []} />
+      ) : isHorizontalBar ? (
+        <div className="flex flex-1 flex-col justify-center">
+          <HorizontalBarStat metrics={panel.metrics ?? []} />
+        </div>
+      ) : hasMetricCards ? (
         <PanelMetricGrid cards={panel.metricCards ?? []} />
       ) : (
         <div className="relative min-h-0 flex-1">

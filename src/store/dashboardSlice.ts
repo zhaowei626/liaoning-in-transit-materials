@@ -1,19 +1,20 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { initialDateFilters, initialOrderTypes } from "@/data/mockData";
-import type { DateRangeFilter, OrderTypeFilter } from "@/types/dashboard";
+import { initialDateFilters, initialSelectedOrderType, initialSelectedUnit } from "@/data/mockData";
+import type { DateRangeFilter, OrderTypeFilter, UnitFilter } from "@/types/dashboard";
 
 export interface DashboardState {
   dateFilters: DateRangeFilter[];
-  orderTypes: OrderTypeFilter[];
+  selectedOrderType: OrderTypeFilter["id"];
+  selectedUnit: UnitFilter["id"];
   lastQueryAt: string | null;
 }
 
 const createInitialDateFilters = () => initialDateFilters.map((filter) => ({ ...filter }));
-const createInitialOrderTypes = () => initialOrderTypes.map((filter) => ({ ...filter }));
 
 const initialState: DashboardState = {
   dateFilters: createInitialDateFilters(),
-  orderTypes: createInitialOrderTypes(),
+  selectedOrderType: initialSelectedOrderType,
+  selectedUnit: initialSelectedUnit,
   lastQueryAt: null
 };
 
@@ -31,23 +32,23 @@ const dashboardSlice = createSlice({
         target[action.payload.field] = action.payload.value;
       }
     },
-    toggleOrderType(state, action: PayloadAction<OrderTypeFilter["id"]>) {
-      const target = state.orderTypes.find((filter) => filter.id === action.payload);
-
-      if (target) {
-        target.checked = !target.checked;
-      }
+    setOrderType(state, action: PayloadAction<OrderTypeFilter["id"]>) {
+      state.selectedOrderType = action.payload;
+    },
+    setUnit(state, action: PayloadAction<UnitFilter["id"]>) {
+      state.selectedUnit = action.payload;
     },
     submitQuery(state, action: PayloadAction<string>) {
       state.lastQueryAt = action.payload;
     },
     resetFilters(state) {
       state.dateFilters = createInitialDateFilters();
-      state.orderTypes = createInitialOrderTypes();
+      state.selectedOrderType = initialSelectedOrderType;
+      state.selectedUnit = initialSelectedUnit;
       state.lastQueryAt = null;
     }
   }
 });
 
-export const { resetFilters, setDateRange, submitQuery, toggleOrderType } = dashboardSlice.actions;
+export const { resetFilters, setDateRange, setOrderType, setUnit, submitQuery } = dashboardSlice.actions;
 export const dashboardReducer = dashboardSlice.reducer;
