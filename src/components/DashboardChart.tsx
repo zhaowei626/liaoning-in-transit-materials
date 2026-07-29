@@ -11,6 +11,8 @@ import {
   PointElement,
   Tooltip
 } from "chart.js";
+import type { ActiveElement, Chart as ChartInstance, ChartEvent } from "chart.js";
+import { useRouter } from "next/navigation";
 import { Bar, Line } from "react-chartjs-2";
 import {
   barChartOptions,
@@ -22,6 +24,46 @@ import type { ChartDataSet, ChartPanelData } from "@/types/dashboard";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, Tooltip, Legend);
 
+function resolveLinkedLabelHref(
+  event: ChartEvent,
+  elements: ActiveElement[],
+  chartInstance: ChartInstance,
+  labels: string[],
+  labelLinks?: Record<string, string>
+) {
+  if (!labelLinks) {
+    return null;
+  }
+
+  let labelIndex = elements[0]?.index;
+
+  if (labelIndex === undefined) {
+    const xScale = chartInstance.scales.x;
+
+    if (xScale && typeof event.x === "number" && typeof event.y === "number") {
+      const isInsideHorizontalScale = event.x >= xScale.left && event.x <= xScale.right;
+      const isInsideLabelBand = event.y >= chartInstance.chartArea.bottom && event.y <= xScale.bottom;
+
+      if (!isInsideHorizontalScale || !isInsideLabelBand) {
+        return null;
+      }
+
+      const rawIndex = xScale.getValueForPixel(event.x);
+      const parsedIndex = typeof rawIndex === "number" ? rawIndex : Number(rawIndex);
+
+      if (Number.isFinite(parsedIndex)) {
+        labelIndex = Math.round(parsedIndex);
+      }
+    }
+  }
+
+  if (labelIndex === undefined || labelIndex < 0 || labelIndex >= labels.length) {
+    return null;
+  }
+
+  return labelLinks[labels[labelIndex]] ?? null;
+}
+
 export interface DashboardChartProps
   extends Readonly<{
     type: ChartPanelData["type"];
@@ -30,6 +72,7 @@ export interface DashboardChartProps
   }> {}
 
 export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
+  const router = useRouter();
   const yAxisTitle = chart.unit ? {
     display: true,
     text: `单位: ${chart.unit}`,
@@ -56,6 +99,19 @@ export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
 
   const options = {
     ...barChartOptions,
+    ...(chart.labelLinks ? {
+      onClick: (event: ChartEvent, elements: ActiveElement[], chartInstance: ChartInstance) => {
+        const href = resolveLinkedLabelHref(event, elements, chartInstance, chart.labels, chart.labelLinks);
+
+        if (href) {
+          router.push(href);
+        }
+      },
+      onHover: (event: ChartEvent, elements: ActiveElement[], chartInstance: ChartInstance) => {
+        const href = resolveLinkedLabelHref(event, elements, chartInstance, chart.labels, chart.labelLinks);
+        chartInstance.canvas.style.cursor = href ? "pointer" : "default";
+      }
+    } : {}),
     scales: {
       ...barChartOptions.scales,
       x: {
@@ -73,7 +129,7 @@ export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
           grid: { display: false },
           ticks: {
             color: "#64748b",
-            callback: (value: any) => `${value}%`
+            callback: (value: any) => chart.unit?.includes("/") ? `${value}` : `${value}%`
           }
         }
       } : {})

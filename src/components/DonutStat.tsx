@@ -91,6 +91,9 @@ export function DonutStat({ metrics, cardId }: DonutStatProps) {
           <div className="font-display text-sm font-bold" style={{ color: batchColor }}>
             {batchAmount?.value}{" "}
             <span className="text-[10px] font-normal text-inkMuted dark:text-inkMuted">{batchAmount?.unit}</span>
+            <span className="mx-1.5 text-slate-500/50">|</span>
+            {batchCount?.value}{" "}
+            <span className="text-[10px] font-normal text-inkMuted dark:text-inkMuted">{batchCount?.unit}</span>
           </div>
         </div>
 
@@ -102,6 +105,9 @@ export function DonutStat({ metrics, cardId }: DonutStatProps) {
           <div className="font-display text-sm font-bold" style={{ color: ecoColor }}>
             {ecoAmount?.value}{" "}
             <span className="text-[10px] font-normal text-inkMuted dark:text-inkMuted">{ecoAmount?.unit}</span>
+            <span className="mx-1.5 text-slate-500/50">|</span>
+            {ecoCount?.value}{" "}
+            <span className="text-[10px] font-normal text-inkMuted dark:text-inkMuted">{ecoCount?.unit}</span>
           </div>
         </div>
       </div>

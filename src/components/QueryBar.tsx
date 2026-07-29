@@ -1,5 +1,7 @@
 import type { ChangeEventHandler } from "react";
 import type { DateRangeFilter, OrderTypeFilter } from "@/types/dashboard";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export interface QueryBarProps
   extends Readonly<{
@@ -14,6 +16,8 @@ export interface QueryBarProps
     createOrderTypeHandler: (id: OrderTypeFilter["id"]) => ChangeEventHandler<HTMLInputElement>;
     onSearch: () => void;
     onReset: () => void;
+    backHref?: string;
+    backLabel?: string;
   }> {}
 
 export function QueryBar({
@@ -24,7 +28,9 @@ export function QueryBar({
   createDateChangeHandler,
   createOrderTypeHandler,
   onSearch,
-  onReset
+  onReset,
+  backHref,
+  backLabel = "返回省公司"
 }: QueryBarProps) {
   return (
     <section className="tech-panel mb-4 flex items-end justify-between gap-6 p-4">
@@ -83,6 +89,16 @@ export function QueryBar({
         >
           {resetLabel}
         </button>
+        {backHref ? (
+          <Link
+            aria-label={backLabel}
+            className="inline-flex h-9 min-w-28 items-center justify-center gap-2 rounded-dashboard border border-cyanLine bg-slateGlass px-4 text-sm font-bold text-cyanCore shadow-cyanGlow transition-colors hover:bg-cyanCore/15 hover:text-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyanCore dark:border-cyanLine dark:bg-slateGlass dark:text-cyanCore"
+            href={backHref}
+          >
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" strokeWidth={2.2} />
+            <span>{backLabel}</span>
+          </Link>
+        ) : null}
       </div>
     </section>
   );

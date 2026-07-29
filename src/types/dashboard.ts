@@ -35,6 +35,8 @@ export interface MetricItem {
   label: string;
   value: string;
   unit: string;
+  subValue?: string;
+  subUnit?: string;
   tone: MetricTone;
   icon: IconKey;
 }
@@ -58,14 +60,25 @@ export interface ChartDataSet {
   labels: string[];
   datasets: ChartDataset[];
   unit?: string;
+  labelLinks?: Record<string, string>;
+}
+
+export interface PanelMetricCard {
+  id: string;
+  label: string;
+  value: string;
+  unit: string;
+  tone: MetricTone;
 }
 
 export interface ChartPanelData {
   id: string;
   title: string;
   type: "bar" | "line";
-  span: "half";
+  span?: "half" | "full";
   chart: ChartDataSet;
   tabs?: NavigationItem[];
   stacked?: boolean;
+  summary?: { label: string; value: string; unit: string }[];
+  metricCards?: PanelMetricCard[];
 }

@@ -42,6 +42,12 @@ export function HorizontalBarStat({ metrics, cardId }: HorizontalBarStatProps) {
               </div>
               <div className="font-display text-sm font-bold" style={{ color: colors[2] }}>
                 {metric.value} <span className="text-[10px] font-normal text-inkMuted dark:text-inkMuted">{metric.unit}</span>
+                {metric.subValue && (
+                  <>
+                    <span className="mx-1.5 text-slate-500/50">|</span>
+                    {metric.subValue} <span className="text-[10px] font-normal text-inkMuted dark:text-inkMuted">{metric.subUnit}</span>
+                  </>
+                )}
               </div>
             </div>
             {/* Progress Bar */}
