@@ -5,10 +5,11 @@ import { FooterRail } from "@/components/FooterRail";
 import { MainHeader } from "@/components/MainHeader";
 import { QueryBar } from "@/components/QueryBar";
 import { StatCard } from "@/components/StatCard";
-import { chartPanels, dashboardTitle, queryActions, statCards } from "@/data/mockData";
+import { chartPanels, dashboardTitle, queryActions, statCards, getCityDashboardData, unitFilters } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import { useDashboardFilters } from "@/hooks/useDashboardFilters";
 import type { ChartPanelData, StatCardData } from "@/types/dashboard";
+import { useMemo } from "react";
 
 export interface DashboardPageProps
   extends Readonly<{
@@ -18,9 +19,33 @@ export interface DashboardPageProps
     backLabel?: string;
   }> {}
 
-export function DashboardPage({ panels = chartPanels, cards = statCards, backHref, backLabel = "返回省公司" }: DashboardPageProps) {
+export function DashboardPage({ panels: initialPanels, cards: initialCards, backHref, backLabel = "返回省公司" }: DashboardPageProps) {
   const clock = useClock();
   const filters = useDashboardFilters();
+
+  const { panels, cards } = useMemo(() => {
+    // 如果是地市页面直接传入了数据，则使用传入的数据
+    if (initialPanels || initialCards) {
+      return { panels: initialPanels ?? chartPanels, cards: initialCards ?? statCards };
+    }
+
+    // 根据选择的单位动态切换数据
+    if (filters.selectedUnit === "all") {
+      return { panels: chartPanels, cards: statCards };
+    }
+
+    // 查找选中的单位名称
+    const selectedUnitOption = unitFilters.find(u => u.id === filters.selectedUnit);
+    const cityName = selectedUnitOption?.label ?? "";
+    
+    // 获取地市数据
+    const cityData = getCityDashboardData(cityName);
+    if (cityData) {
+      return { panels: cityData.panels, cards: cityData.cards };
+    }
+
+    return { panels: chartPanels, cards: statCards };
+  }, [filters.selectedUnit, initialPanels, initialCards]);
 
   return (
     <div className="dashboard-shell min-h-screen w-full overflow-x-hidden p-dashboard text-slate-100 dark:text-slate-100">

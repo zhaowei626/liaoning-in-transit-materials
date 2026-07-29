@@ -4,6 +4,7 @@ import { TechPanel } from "@/components/TechPanel";
 import { DonutStat } from "@/components/DonutStat";
 import { HorizontalBarStat } from "@/components/HorizontalBarStat";
 import type { MetricItem, StatCardData } from "@/types/dashboard";
+import { MousePointer2 } from "lucide-react";
 
 export interface StatCardProps
   extends Readonly<{
@@ -12,8 +13,11 @@ export interface StatCardProps
 
 export function StatCard({ card }: StatCardProps) {
   return (
-    <TechPanel className="flex min-h-[12rem] flex-col justify-between p-4">
-      <SectionTitle title={card.title} />
+    <TechPanel className="flex min-h-[12rem] flex-col justify-between p-4 cursor-pointer hover:bg-slate-800/20 transition-colors group">
+      <div className="flex items-center justify-between">
+        <SectionTitle title={card.title} />
+        <MousePointer2 className="h-3.5 w-3.5 text-inkMuted/50 group-hover:text-cyanCore transition-colors" />
+      </div>
       {card.layout === "donut" ? (
         <DonutStat metrics={card.metrics} cardId={card.id} />
       ) : card.layout === "horizontal-bar" ? (
