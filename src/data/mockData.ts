@@ -11,7 +11,7 @@ export const dashboardTitle = "\"五库一仓\" 资源全景可视化";
 
 export const leftNavigation: NavigationItem[] = [
   { id: "home", label: "首页", href: "/", active: false },
-  { id: "transit", label: "在途物资库", href: "/", active: true },
+  { id: "transit", label: "在途物资库", href: "/transit", active: false },
   { id: "material", label: "物资库", href: "/materials", active: false },
   { id: "virtual", label: "虚拟库", href: "/virtual", active: false }
 ];

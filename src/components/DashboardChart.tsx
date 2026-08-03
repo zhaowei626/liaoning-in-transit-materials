@@ -73,6 +73,11 @@ export interface DashboardChartProps
 
 export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
   const router = useRouter();
+  
+  if (!chart) {
+    return <div className="flex h-full items-center justify-center text-slate-500">图表数据尚未准备好</div>;
+  }
+
   const yAxisTitle = chart.unit ? {
     display: true,
     text: `单位: ${chart.unit}`,
