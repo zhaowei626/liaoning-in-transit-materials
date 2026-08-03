@@ -7,7 +7,7 @@ import type {
   UnitFilter
 } from "@/types/dashboard";
 
-export const dashboardTitle = "\"五库一仓\" 资源全景可视化";
+export const dashboardTitle = "实物资源全景可视平台";
 
 export const leftNavigation: NavigationItem[] = [
   { id: "home", label: "首页", href: "/", active: false },
