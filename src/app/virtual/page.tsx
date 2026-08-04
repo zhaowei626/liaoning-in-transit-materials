@@ -6,11 +6,14 @@ import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import { 
   virtualKpis, 
-  reasonDistribution, 
   cityDistributionPanel, 
+  over14DaysDistributionPanel,
   dataChangeRecords,
+  over14Days9500DistributionPanel,
+  city9500V2DistributionPanel,
+  dataChange9500V2Records,
   city9300DistributionPanel,
-  borrowedOver90DaysPanel,
+  borrowedOver180DaysPanel,
   dataChange9300Records,
   city9400DistributionPanel,
   dataChange9400Records,
@@ -22,7 +25,6 @@ import {
   dataChange9800Records
 } from "@/data/virtualData";
 import { VirtualKpiCard } from "@/components/VirtualKpiCard";
-import { VirtualReasonDonut } from "@/components/VirtualReasonDonut";
 import { VirtualDataChanges } from "@/components/VirtualDataChanges";
 import { Virtual9300DataChanges } from "@/components/Virtual9300DataChanges";
 import { ChartPanel } from "@/components/ChartPanel";
@@ -45,7 +47,7 @@ export default function VirtualWarehousePage() {
         </div>
 
         {/* First Row: KPI Cards */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
           {virtualKpis.map((kpi) => (
             <VirtualKpiCard key={kpi.id} card={kpi} />
           ))}
@@ -58,13 +60,10 @@ export default function VirtualWarehousePage() {
             <ChartPanel panel={cityDistributionPanel} />
           </div>
 
-          {/* Area 1: Reason Distribution Donut (2/5 cols) */}
-          <TechPanel className="col-span-1 lg:col-span-2 p-4 flex flex-col overflow-hidden">
-            <SectionTitle title="9100库存按积压原因分布情况" />
-            <div className="flex-1 mt-2 overflow-hidden">
-              <VirtualReasonDonut data={reasonDistribution} />
-            </div>
-          </TechPanel>
+          {/* Area 1: Over 14 Days Distribution Line Chart (2/5 cols) */}
+          <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
+            <ChartPanel panel={over14DaysDistributionPanel} />
+          </div>
 
           {/* Area 3: Data Changes List (1/5 col) */}
           <TechPanel className="col-span-1 p-4 flex flex-col overflow-hidden">
@@ -77,14 +76,14 @@ export default function VirtualWarehousePage() {
 
         {/* Third Row: 9300 Charts */}
         <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[350px]">
-          {/* Area 4: 9300 City Distribution (2/5 cols) */}
+          {/* Area 5: 9300 City Distribution (2/6 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
             <ChartPanel panel={city9300DistributionPanel} />
           </div>
 
-          {/* Area 5: 9300 Borrowed Over 90 Days (2/5 cols) */}
+          {/* Area 6: 9300 Borrowed Over 180 Days (2/6 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
-            <ChartPanel panel={borrowedOver90DaysPanel} />
+            <ChartPanel panel={borrowedOver180DaysPanel} />
           </div>
 
           {/* Area 6: 9300 Data Changes (1/5 col) */}
@@ -96,62 +95,43 @@ export default function VirtualWarehousePage() {
           </TechPanel>
         </section>
 
-        {/* Fourth Row: 9400 and 9500 Charts */}
-        <section className="grid grid-cols-1 lg:grid-cols-6 gap-4 h-[350px]">
-          {/* Area 7: 9400 City Distribution (2/6 cols) */}
+        {/* Fourth Row: 9500 Detailed Charts and Data (Cloned from 9100) */}
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[350px]">
+          {/* Area 2: City Distribution Bar + Line Chart (2/5 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
-            <ChartPanel panel={city9400DistributionPanel} />
+            <ChartPanel panel={city9500V2DistributionPanel} />
           </div>
 
-          {/* Area 8: 9400 Data Changes (1/6 col) */}
-          <TechPanel className="col-span-1 p-4 flex flex-col overflow-hidden">
-            <SectionTitle title="9400数据增减情况" />
-            <div className="flex-1 mt-4 overflow-hidden">
-              <Virtual9300DataChanges records={dataChange9400Records} />
-            </div>
-          </TechPanel>
-
-          {/* Area 9: 9500 City Distribution (2/6 cols) */}
+          {/* Area 1: Over 14 Days Distribution Line Chart (2/5 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
-            <ChartPanel panel={city9500DistributionPanel} />
+            <ChartPanel panel={over14Days9500DistributionPanel} />
           </div>
 
-          {/* Area 10: 9500 Data Changes (1/6 col) */}
+          {/* Area 3: Data Changes List (1/5 col) */}
           <TechPanel className="col-span-1 p-4 flex flex-col overflow-hidden">
             <SectionTitle title="9500数据增减情况" />
             <div className="flex-1 mt-4 overflow-hidden">
-              <Virtual9300DataChanges records={dataChange9500Records} />
+              <VirtualDataChanges records={dataChange9500V2Records} />
             </div>
           </TechPanel>
         </section>
 
-        {/* Fifth Row: 9700 and 9800 Charts */}
-        <section className="grid grid-cols-1 lg:grid-cols-6 gap-4 h-[350px]">
-          {/* Area 11: 9700 City Distribution (2/6 cols) */}
-          <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
+        {/* Fifth Row: 9400, 9700 and 9800 Charts (Shifted) */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[350px]">
+          {/* Area 7: 9400 City Distribution */}
+          <div className="flex flex-col overflow-hidden">
+            <ChartPanel panel={city9400DistributionPanel} />
+          </div>
+
+          {/* Area 11: 9700 City Distribution */}
+          <div className="flex flex-col overflow-hidden">
             <ChartPanel panel={city9700DistributionPanel} />
           </div>
 
-          {/* Area 12: 9700 Data Changes (1/6 col) */}
-          <TechPanel className="col-span-1 p-4 flex flex-col overflow-hidden">
-            <SectionTitle title="9700数据增减情况" />
-            <div className="flex-1 mt-4 overflow-hidden">
-              <Virtual9300DataChanges records={dataChange9700Records} />
-            </div>
-          </TechPanel>
-
-          {/* Area 13: 9800 City Distribution (2/6 cols) */}
-          <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
+          {/* Area 13: 9800 City Distribution */}
+          <div className="flex flex-col overflow-hidden">
             <ChartPanel panel={city9800DistributionPanel} />
           </div>
-
-          {/* Area 14: 9800 Data Changes (1/6 col) */}
-          <TechPanel className="col-span-1 p-4 flex flex-col overflow-hidden">
-            <SectionTitle title="9800数据增减情况" />
-            <div className="flex-1 mt-4 overflow-hidden">
-              <Virtual9300DataChanges records={dataChange9800Records} />
-            </div>
-          </TechPanel>
         </section>
       </main>
 

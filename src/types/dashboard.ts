@@ -64,6 +64,7 @@ export interface ChartDataSet {
   labels: string[];
   datasets: ChartDataset[];
   unit?: string;
+  secondaryUnit?: string;
   labelLinks?: Record<string, string>;
 }
 

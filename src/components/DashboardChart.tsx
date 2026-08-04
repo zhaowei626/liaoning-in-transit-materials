@@ -132,9 +132,19 @@ export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
         y1: {
           position: "right" as const,
           grid: { display: false },
+          title: chart.secondaryUnit ? {
+            display: true,
+            text: `单位: ${chart.secondaryUnit}`,
+            align: "end" as const,
+            color: "#64748b",
+            font: { size: 10 }
+          } : undefined,
           ticks: {
             color: "#64748b",
-            callback: (value: any) => chart.unit?.includes("/") ? `${value}` : `${value}%`
+            callback: (value: any) => {
+              if (chart.secondaryUnit) return `${value}`;
+              return chart.unit?.includes("/") ? `${value}` : `${value}%`;
+            }
           }
         }
       } : {})
