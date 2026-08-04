@@ -54,7 +54,7 @@ export default function VirtualWarehousePage() {
         </section>
 
         {/* Second Row: Detailed Charts and Data */}
-        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[350px]">
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[260px]">
           {/* Area 2: City Distribution Bar + Line Chart (2/5 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
             <ChartPanel panel={cityDistributionPanel} />
@@ -75,7 +75,7 @@ export default function VirtualWarehousePage() {
         </section>
 
         {/* Third Row: 9300 Charts */}
-        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[350px]">
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[260px]">
           {/* Area 5: 9300 City Distribution (2/6 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
             <ChartPanel panel={city9300DistributionPanel} />
@@ -96,7 +96,7 @@ export default function VirtualWarehousePage() {
         </section>
 
         {/* Fourth Row: 9500 Detailed Charts and Data (Cloned from 9100) */}
-        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[350px]">
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-[260px]">
           {/* Area 2: City Distribution Bar + Line Chart (2/5 cols) */}
           <div className="col-span-1 lg:col-span-2 flex flex-col overflow-hidden">
             <ChartPanel panel={city9500V2DistributionPanel} />
@@ -117,7 +117,7 @@ export default function VirtualWarehousePage() {
         </section>
 
         {/* Fifth Row: 9400, 9700 and 9800 Charts (Shifted) */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[350px]">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[260px]">
           {/* Area 7: 9400 City Distribution */}
           <div className="flex flex-col overflow-hidden">
             <ChartPanel panel={city9400DistributionPanel} />
