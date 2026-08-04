@@ -1,7 +1,7 @@
 import { TechPanel } from "@/components/TechPanel";
 import type { VirtualKpiData } from "@/data/virtualData";
 import { formatAmount, formatQuantity } from "@/lib/format";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, MousePointer2 } from "lucide-react";
 
 export interface VirtualKpiCardProps {
   card: VirtualKpiData;
@@ -13,16 +13,23 @@ export function VirtualKpiCard({ card }: VirtualKpiCardProps) {
   const isAmountVertical = ["overall", "v9100", "v9300", "v9400", "v9500"].includes(card.id);
 
   return (
-    <TechPanel className={`flex flex-col p-4 min-h-[140px] hover:border-cyanLine/50 transition-colors group ${
+    <TechPanel className={`flex flex-col p-4 min-h-[140px] cursor-pointer hover:bg-slate-800/20 transition-colors group ${
       isOverall ? "border-cyanCore/40 bg-cyanCore/5" : 
       isAlert ? "border-amberCore/40 bg-amberCore/5" : ""
     }`}>
-      <h3 className={`font-bold truncate ${
-        isOverall ? "text-slate-300 text-base mb-2" : 
-        isAlert ? "text-amberCore text-sm mb-3" : "text-slate-300 text-sm mb-3"
-      }`} title={card.title}>
-        {card.title}
-      </h3>
+      <div className="flex items-start justify-between mb-2">
+        <h3 className={`font-bold truncate flex-1 ${
+          isOverall ? "text-slate-300 text-base" : 
+          isAlert ? "text-amberCore text-sm" : "text-slate-300 text-sm"
+        }`} title={card.title}>
+          {card.title}
+        </h3>
+        <MousePointer2 className={`h-3.5 w-3.5 mt-0.5 transition-colors ${
+          isAlert 
+            ? "text-amberCore/50 group-hover:text-amberCore" 
+            : "text-inkMuted/50 group-hover:text-cyanCore"
+        }`} />
+      </div>
       <div className="flex-1 flex flex-col justify-center gap-3">
         {card.metrics.map((metric, idx) => {
           const displayValue = metric.isQuantity
