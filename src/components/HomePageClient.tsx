@@ -231,9 +231,11 @@ export function HomePageClient() {
         
         {/* Bottom Buttons */}
         <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-6 z-20">
-          <button className="px-8 py-2 rounded-full border border-cyanCore/60 bg-panelStrong text-cyanCore font-semibold hover:bg-cyanCore/20 hover:shadow-[0_0_15px_rgba(0,242,255,0.4)] transition-all">
-            工程监控
-          </button>
+          <Link href="/project-monitoring">
+            <button className="px-8 py-2 rounded-full border border-cyanCore/60 bg-panelStrong text-cyanCore font-semibold hover:bg-cyanCore/20 hover:shadow-[0_0_15px_rgba(0,242,255,0.4)] transition-all">
+              工程监控
+            </button>
+          </Link>
           <button className="px-8 py-2 rounded-full border border-cyanCore/60 bg-panelStrong text-cyanCore font-semibold hover:bg-cyanCore/20 hover:shadow-[0_0_15px_rgba(0,242,255,0.4)] transition-all">
             甘特图
           </button>

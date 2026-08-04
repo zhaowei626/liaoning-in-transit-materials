@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { leftNavigation, rightNavigation } from "@/data/mockData";
 import { NavigationBar } from "@/components/NavigationBar";
