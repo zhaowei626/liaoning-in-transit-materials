@@ -93,8 +93,8 @@ export const over14DaysDistributionPanel: ChartPanelData = {
   chart: over14DaysDistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -132,8 +132,8 @@ export const cityDistributionPanel: ChartPanelData = {
   chart: cityDistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -153,8 +153,8 @@ export const over14Days9500DistributionPanel: ChartPanelData = {
   chart: over14Days9500DistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -165,7 +165,6 @@ export const city9500V2DistributionChart: ChartDataSet = {
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
   datasets: [
     { label: "一步收发", data: [160, 200, 120, 110, 150, 100, 140, 120, 90, 110, 80, 100, 95, 85], tone: "cyan", type: "bar" },
-    { label: "一步退利", data: [150, 190, 110, 100, 140, 90, 130, 115, 85, 105, 75, 95, 90, 80], tone: "amber", type: "bar" },
     { label: "其他", data: [40, 50, 30, 25, 35, 20, 35, 30, 20, 28, 20, 25, 22, 20], tone: "cyan", type: "bar" },
     { label: "条目", data: [320, 400, 240, 210, 300, 190, 270, 230, 180, 215, 160, 200, 185, 170], tone: "amber", type: "line", yAxisID: "y1" }
   ]
@@ -179,14 +178,13 @@ export const city9500V2DistributionPanel: ChartPanelData = {
   chart: city9500V2DistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
 export const dataChange9500V2Records: DataChangeRecord[] = [
   { id: "1", type: "add", count: 10, city: "沈阳", dataType: "一步收发", amount: 35.2, reason: "用户锁定" },
-  { id: "2", type: "add", count: 6, city: "大连", dataType: "一步退利", amount: 22.1, reason: "财务字段为空" },
   { id: "3", type: "clear", count: 12, city: "抚顺", dataType: "一步收发", amount: 48.4, reason: "业务办理完成" }
 ];
 
@@ -210,8 +208,8 @@ export const city9300DistributionPanel: ChartPanelData = {
   chart: city9300DistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -232,8 +230,8 @@ export const borrowedOver180DaysPanel: ChartPanelData = {
   chart: borrowedOver180DaysChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -277,8 +275,8 @@ export const city9400DistributionPanel: ChartPanelData = {
   chart: city9400DistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -331,8 +329,8 @@ export const city9700DistributionPanel: ChartPanelData = {
   chart: city9700DistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
@@ -359,8 +357,8 @@ export const city9800DistributionPanel: ChartPanelData = {
   chart: city9800DistributionChart,
   className: "h-full",
   tabs: [
-    { id: "city", label: "地市", active: true, href: "#" },
-    { id: "unit", label: "业务单位", active: false, href: "#" }
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
   ]
 };
 
