@@ -1,4 +1,4 @@
-import { DashboardPage } from "@/components/DashboardPage";
+import DashboardPage from "../../components/DashboardPage";
 
 export interface HomePageProps extends Readonly<Record<string, never>> {}
 

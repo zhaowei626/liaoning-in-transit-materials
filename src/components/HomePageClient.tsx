@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { MainHeader } from "@/components/MainHeader";
+import MainHeader from "@/components/MainHeader";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import { PackageSearch, Warehouse, Network, Box, Database, ArrowRight } from "lucide-react";
 import { formatAmount, formatQuantity } from "@/lib/format";
 
-export function HomePageClient() {
+export default function HomePageClient() {
   const clock = useClock();
 
   return (

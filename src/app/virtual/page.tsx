@@ -1,7 +1,7 @@
 "use client";
 
-import { MainHeader } from "@/components/MainHeader";
-import { FooterRail } from "@/components/FooterRail";
+import MainHeader from "../../components/MainHeader";
+import { FooterRail } from "../../components/FooterRail";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import { 
@@ -25,12 +25,12 @@ import {
   city9800DistributionPanel,
   dataChange9800Records
 } from "@/data/virtualData";
-import { VirtualKpiCard } from "@/components/VirtualKpiCard";
-import { VirtualDataChanges } from "@/components/VirtualDataChanges";
-import { Virtual9300DataChanges } from "@/components/Virtual9300DataChanges";
-import { ChartPanel } from "@/components/ChartPanel";
-import { TechPanel } from "@/components/TechPanel";
-import { SectionTitle } from "@/components/SectionTitle";
+import { VirtualKpiCard } from "../../components/VirtualKpiCard";
+import { VirtualDataChanges } from "../../components/VirtualDataChanges";
+import { Virtual9300DataChanges } from "../../components/Virtual9300DataChanges";
+import { ChartPanel } from "../../components/ChartPanel";
+import { TechPanel } from "../../components/TechPanel";
+import { SectionTitle } from "../../components/SectionTitle";
 import { useEffect, useState, useRef } from "react";
 
 function AgingScrollingList({ records }: { records: any[] }) {

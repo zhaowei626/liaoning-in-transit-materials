@@ -1,4 +1,4 @@
-import { HomePageClient } from "@/components/HomePageClient";
+import HomePageClient from "../components/HomePageClient";
 
 export interface HomePageProps extends Readonly<Record<string, never>> {}
 

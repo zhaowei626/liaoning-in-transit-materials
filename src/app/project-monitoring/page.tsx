@@ -1,9 +1,9 @@
 "use client";
 
-import { MainHeader } from "@/components/MainHeader";
-import { FooterRail } from "@/components/FooterRail";
-import { SectionTitle } from "@/components/SectionTitle";
-import { TechPanel } from "@/components/TechPanel";
+import MainHeader from "../../components/MainHeader";
+import { FooterRail } from "../../components/FooterRail";
+import { SectionTitle } from "../../components/SectionTitle";
+import { TechPanel } from "../../components/TechPanel";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import { Search, RotateCcw, FileText, ArrowRight, ArrowDown, Rocket, CheckSquare, Edit3, PenTool, Truck, Home, Box, Recycle, Undo2, ChevronDown } from "lucide-react";

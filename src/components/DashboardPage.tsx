@@ -2,7 +2,7 @@
 
 import { ChartPanel } from "@/components/ChartPanel";
 import { FooterRail } from "@/components/FooterRail";
-import { MainHeader } from "@/components/MainHeader";
+import MainHeader from "@/components/MainHeader";
 import { QueryBar } from "@/components/QueryBar";
 import { StatCard } from "@/components/StatCard";
 import { chartPanels, dashboardTitle, queryActions, statCards, getCityDashboardData, unitFilters } from "@/data/mockData";
@@ -19,7 +19,7 @@ export interface DashboardPageProps
     backLabel?: string;
   }> {}
 
-export function DashboardPage({ panels: initialPanels, cards: initialCards, backHref, backLabel = "返回省公司" }: DashboardPageProps) {
+export default function DashboardPage({ panels: initialPanels, cards: initialCards, backHref, backLabel = "返回省公司" }: DashboardPageProps) {
   const clock = useClock();
   const filters = useDashboardFilters();
 

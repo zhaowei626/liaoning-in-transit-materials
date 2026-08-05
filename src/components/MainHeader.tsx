@@ -10,7 +10,7 @@ export interface MainHeaderProps
     clock: string;
   }> {}
 
-export function MainHeader({ title, clock }: MainHeaderProps) {
+export default function MainHeader({ title, clock }: MainHeaderProps) {
   return (
     <header className="relative mb-4 flex flex-col items-center">
       <div className="header-shell absolute inset-x-0 top-0 h-20 border-b border-cyanLine dark:border-cyanLine" />
