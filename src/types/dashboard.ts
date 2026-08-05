@@ -1,4 +1,4 @@
-export type MetricTone = "cyan" | "amber";
+export type MetricTone = "cyan" | "amber" | "cyan-light" | "amber-light" | "indigo" | "emerald" | "orange" | "red";
 
 export type IconKey =
   | "fileStack"

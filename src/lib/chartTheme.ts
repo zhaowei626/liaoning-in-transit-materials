@@ -3,12 +3,24 @@ import type { ChartDataSet, MetricTone } from "@/types/dashboard";
 
 const toneColors: Record<MetricTone, string> = {
   cyan: "#00f2ff",
-  amber: "#ffbf00"
+  amber: "#ffbf00",
+  "cyan-light": "#67e8f9",
+  "amber-light": "#fbbf24",
+  indigo: "#6366f1",
+  emerald: "#10b981",
+  orange: "#f97316",
+  red: "#ef4444"
 };
 
 const toneFills: Record<MetricTone, string> = {
   cyan: "rgba(0, 242, 255, 0.1)",
-  amber: "rgba(255, 191, 0, 0.1)"
+  amber: "rgba(255, 191, 0, 0.1)",
+  "cyan-light": "rgba(103, 232, 249, 0.1)",
+  "amber-light": "rgba(251, 191, 36, 0.1)",
+  indigo: "rgba(99, 102, 241, 0.1)",
+  emerald: "rgba(16, 185, 129, 0.1)",
+  orange: "rgba(249, 115, 22, 0.1)",
+  red: "rgba(239, 68, 68, 0.1)"
 };
 
 export const resolveToneColor = (tone: MetricTone) => toneColors[tone];
@@ -21,12 +33,14 @@ export function createBarChartData(chart: ChartDataSet) {
         const isProvinceRate = dataset.label === "省公司平均在途率";
         const isCityRate = dataset.label === "各地市在途率";
         
+        const color = toneColors[dataset.tone];
+        
         return {
           type: "line" as const,
           label: dataset.label,
           data: dataset.data,
-          borderColor: isProvinceRate ? "rgba(255, 191, 0, 0.6)" : (dataset.tone === "cyan" ? "#00f2ff" : "#ffbf00"),
-          backgroundColor: isProvinceRate ? "rgba(255, 191, 0, 0.6)" : (dataset.tone === "cyan" ? "#00f2ff" : "#ffbf00"),
+          borderColor: isProvinceRate ? "rgba(255, 191, 0, 0.6)" : color,
+          backgroundColor: isProvinceRate ? "rgba(255, 191, 0, 0.6)" : color,
           borderWidth: 2,
           borderDash: isProvinceRate ? [5, 5] : undefined,
           tension: 0.4,

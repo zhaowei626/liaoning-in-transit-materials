@@ -77,37 +77,45 @@ export const virtualKpis: VirtualKpiData[] = [
   }
 ];
 
-// Area 1: 9100库存超14天按地市/业务单位分布情况
-export const over14DaysDistributionChart: ChartDataSet = {
-  unit: "亿元",
-  labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
-  datasets: [
-    { label: "库存金额", data: [4.2, 3.5, 2.1, 0, 1.2, 0.8, 1.5, 1.1, 0, 0.6, 0.3, 0.2, 0, 0.1], tone: "cyan", type: "line" }
-  ]
-};
+// Area 1: 9100/9500物资库龄超14天情况滚动记录
+export interface AgingRecord {
+  id: string;
+  warehouse: string;
+  city: string;
+  count: number;
+}
+
+export const agingRecords: AgingRecord[] = [
+  { id: "1", warehouse: "项目直发现场虚拟库", city: "沈阳", count: 2 },
+  { id: "2", warehouse: "非项目直发现场虚拟库", city: "大连", count: 5 },
+  { id: "3", warehouse: "项目直发现场虚拟库", city: "鞍山", count: 1 },
+  { id: "4", warehouse: "非项目直发现场虚拟库", city: "抚顺", count: 3 },
+  { id: "5", warehouse: "项目直发现场虚拟库", city: "本溪", count: 4 },
+  { id: "6", warehouse: "非项目直发现场虚拟库", city: "丹东", count: 2 },
+  { id: "7", warehouse: "项目直发现场虚拟库", city: "锦州", count: 6 },
+  { id: "8", warehouse: "非项目直发现场虚拟库", city: "营口", count: 1 },
+  { id: "9", warehouse: "项目直发现场虚拟库", city: "辽阳", count: 3 },
+  { id: "10", warehouse: "非项目直发现场虚拟库", city: "铁岭", count: 4 }
+];
 
 export const over14DaysDistributionPanel: ChartPanelData = {
-  id: "v9100-over14",
-  title: "9100库存超14天按地市/业务单位分布情况",
+  id: "v9100-v9500-over14",
+  title: "9100/9500物资库龄超14天情况",
   type: "line",
-  chart: over14DaysDistributionChart,
-  className: "h-full",
-  tabs: [
-    { id: "city", label: "各地市", active: true, href: "#" },
-    { id: "unit", label: "各业务单位", active: false, href: "#" }
-  ]
+  chart: { labels: [], datasets: [] }, // 保持兼容性，实际页面中将渲染为滚动列表
+  className: "h-full"
 };
 
-// Area 2: 9100库存按地市/业务单位分布情况
+// Area 2: 9100/9500 合并分布情况
 export const cityDistributionChart: ChartDataSet = {
   unit: "万元",
   secondaryUnit: "条",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
   datasets: [
-    { label: "一步收发", data: [210, 260, 160, 140, 190, 130, 180, 155, 120, 145, 110, 135, 125, 115], tone: "cyan", type: "bar" },
-    { label: "一步退利", data: [210, 260, 170, 150, 200, 140, 190, 165, 130, 155, 120, 145, 135, 125], tone: "amber", type: "bar" },
-    { label: "其他", data: [50, 65, 40, 35, 45, 30, 45, 38, 28, 35, 25, 32, 30, 28], tone: "cyan", type: "bar" },
-    { label: "条目", data: [420, 520, 330, 290, 390, 260, 360, 310, 240, 290, 220, 270, 250, 230], tone: "amber", type: "line", yAxisID: "y1" }
+    { label: "9100库存", data: [470, 585, 370, 325, 435, 300, 415, 358, 278, 335, 255, 312, 290, 268], tone: "cyan", type: "bar" },
+    { label: "9500库存", data: [200, 250, 150, 135, 185, 120, 175, 150, 110, 138, 100, 125, 117, 105], tone: "amber", type: "bar" },
+    { label: "9100条目", data: [420, 520, 330, 290, 390, 260, 360, 310, 240, 290, 220, 270, 250, 230], tone: "cyan-light", type: "line", yAxisID: "y1" },
+    { label: "9500条目", data: [320, 400, 240, 210, 300, 190, 270, 230, 180, 215, 160, 200, 185, 170], tone: "amber-light", type: "line", yAxisID: "y1" }
   ]
 };
 
@@ -125,10 +133,10 @@ export interface DataChangeRecord {
 import type { ChartPanelData } from "@/types/dashboard";
 
 export const cityDistributionPanel: ChartPanelData = {
-  id: "v9100-city",
-  title: "9100库存按地市/业务单位分布情况",
+  id: "v9100-v9500-combined",
+  title: "项目直发现场虚拟库(9100)/非项目直发虚拟库(9500)库存按单位分布情况",
   type: "bar",
-  stacked: true,
+  stacked: false,
   chart: cityDistributionChart,
   className: "h-full",
   tabs: [
@@ -188,23 +196,22 @@ export const dataChange9500V2Records: DataChangeRecord[] = [
   { id: "3", type: "clear", count: 12, city: "抚顺", dataType: "一步收发", amount: 48.4, reason: "业务办理完成" }
 ];
 
-// Area 4: 9300库存按地市/业务单位分布情况
+// Area 4: 9300库存按单位分布情况
 export const city9300DistributionChart: ChartDataSet = {
   unit: "万元",
   secondaryUnit: "条",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
   datasets: [
-    { label: "实物储备", data: [190, 230, 155, 130, 170, 110, 210, 155, 130, 170, 120, 150, 140, 130], tone: "cyan", type: "bar" },
-    { label: "电商采购", data: [110, 135, 75, 63, 100, 58, 125, 85, 63, 100, 75, 95, 85, 75], tone: "amber", type: "bar" },
+    { label: "库存", data: [300, 365, 230, 193, 270, 168, 335, 240, 193, 270, 195, 245, 225, 205], tone: "cyan", type: "bar" },
     { label: "条目", data: [300, 365, 230, 193, 270, 168, 335, 240, 193, 270, 195, 245, 225, 205], tone: "amber", type: "line", yAxisID: "y1" }
   ]
 };
 
 export const city9300DistributionPanel: ChartPanelData = {
   id: "v9300-city",
-  title: "9300库存按地市/业务单位分布情况",
+  title: "物资借用虚拟库(9300)库存按单位分布情况",
   type: "bar",
-  stacked: true,
+  stacked: false,
   chart: city9300DistributionChart,
   className: "h-full",
   tabs: [
@@ -213,19 +220,21 @@ export const city9300DistributionPanel: ChartPanelData = {
   ]
 };
 
-// Area 5: 9300物资借用超180天按地市/业务单位分布情况
+// Area 5: 9300物资借用按天分布情况
 export const borrowedOver180DaysChart: ChartDataSet = {
-  unit: "亿元",
+  unit: "条",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
   datasets: [
-    { label: "181天-360天库存金额", data: [2.5, 2.0, 1.2, 0, 0.8, 0.6, 0.9, 0.5, 0, 0.3, 0, 0, 0, 0], tone: "cyan", type: "line" },
-    { label: "361天以上库存金额", data: [1.0, 0.8, 0.5, 0, 0.3, 0.2, 0.4, 0.2, 0, 0.1, 0, 0, 0, 0], tone: "amber", type: "line" }
+    { label: "库龄1天-90天", data: [5.2, 4.8, 3.5, 2.9, 3.8, 2.6, 4.5, 3.2, 2.4, 3.1, 2.2, 2.8, 2.5, 2.3], tone: "cyan", type: "line" },
+    { label: "库龄91天-180天", data: [3.8, 3.2, 2.4, 1.9, 2.8, 1.6, 3.5, 2.2, 1.4, 2.1, 1.2, 1.8, 1.5, 1.3], tone: "amber", type: "line" },
+    { label: "库龄181天-360天", data: [2.5, 2.0, 1.2, 0.8, 1.5, 0.9, 1.8, 1.1, 0.6, 1.0, 0.5, 0.8, 0.7, 0.6], tone: "orange", type: "line" },
+    { label: "库龄361天以上", data: [1.0, 0.8, 0.5, 0.3, 0.6, 0.2, 0.8, 0.4, 0.2, 0.4, 0.1, 0.3, 0.2, 0.2], tone: "red", type: "line" }
   ]
 };
 
 export const borrowedOver180DaysPanel: ChartPanelData = {
   id: "v9300-borrowed",
-  title: "9300物资借用超180天按地市/业务单位分布情况",
+  title: "物资借用虚拟库(9300) 物资按天分布情况",
   type: "line",
   chart: borrowedOver180DaysChart,
   className: "h-full",
