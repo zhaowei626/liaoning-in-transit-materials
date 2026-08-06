@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import DashboardPage from "@/components/DashboardPage";
+import { DashboardPage } from "@/components/DashboardPage";
 import { cityRoutes, getCityDashboardData, getCityNameByRouteParam } from "@/data/mockData";
 
 export interface CityTransitPageProps {

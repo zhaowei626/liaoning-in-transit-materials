@@ -7,7 +7,7 @@ import { useClock } from "@/hooks/useClock";
 import { PackageSearch, Warehouse, Network, Box, Database, ArrowRight } from "lucide-react";
 import { formatAmount, formatQuantity } from "@/lib/format";
 
-export default function HomePageClient() {
+export function HomePageClient() {
   const clock = useClock();
 
   return (

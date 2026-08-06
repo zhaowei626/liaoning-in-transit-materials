@@ -19,7 +19,7 @@ export interface DashboardPageProps
     backLabel?: string;
   }> {}
 
-export default function DashboardPage({ panels: initialPanels, cards: initialCards, backHref, backLabel = "返回省公司" }: DashboardPageProps) {
+export function DashboardPage({ panels: initialPanels, cards: initialCards, backHref, backLabel = "返回省公司" }: DashboardPageProps) {
   const clock = useClock();
   const filters = useDashboardFilters();
 
