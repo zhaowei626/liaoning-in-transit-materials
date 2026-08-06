@@ -1,7 +1,7 @@
+"use client";
+
 import { DashboardPage } from "@/components/DashboardPage";
 
-export interface HomePageProps extends Readonly<Record<string, never>> {}
-
-export default function HomePage(_props: HomePageProps) {
+export default function TransitPage() {
   return <DashboardPage />;
 }
