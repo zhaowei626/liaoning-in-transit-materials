@@ -7,27 +7,11 @@ import { useClock } from "@/hooks/useClock";
 import { 
   virtualKpis, 
   cityDistributionPanel, 
-  over14DaysDistributionPanel,
-  dataChangeRecords,
-  over14Days9500DistributionPanel,
   agingRecords,
-  city9500V2DistributionPanel,
-  dataChange9500V2Records,
   city9300DistributionPanel,
   borrowedOver180DaysPanel,
-  dataChange9300Records,
-  city9400DistributionPanel,
-  dataChange9400Records,
-  city9500DistributionPanel,
-  dataChange9500Records,
-  city9700DistributionPanel,
-  dataChange9700Records,
-  city9800DistributionPanel,
-  dataChange9800Records
 } from "@/data/virtualData";
 import { VirtualKpiCard } from "../../components/VirtualKpiCard";
-import { VirtualDataChanges } from "../../components/VirtualDataChanges";
-import { Virtual9300DataChanges } from "../../components/Virtual9300DataChanges";
 import { ChartPanel } from "../../components/ChartPanel";
 import { TechPanel } from "../../components/TechPanel";
 import { SectionTitle } from "../../components/SectionTitle";
