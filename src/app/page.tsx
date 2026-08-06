@@ -1,4 +1,10 @@
-import HomePageClient from "../components/HomePageClient";
+"use client";
+
+import dynamic from "next/dynamic";
+
+const HomePageClient = dynamic(() => import("@/components/HomePageClient"), {
+  ssr: false,
+});
 
 export interface HomePageProps extends Readonly<Record<string, never>> {}
 
