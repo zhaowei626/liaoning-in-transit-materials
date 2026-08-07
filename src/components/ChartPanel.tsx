@@ -92,8 +92,24 @@ function PanelMetricGrid({ cards }: PanelMetricGridProps) {
   return (
     <div className={`grid flex-1 grid-cols-1 ${isComparison ? "items-stretch gap-4 sm:grid-cols-2" : "gap-3 sm:grid-cols-2 2xl:grid-cols-5"}`}>
       {cards.map((card) => {
-        const toneClass = card.tone === "amber" ? "text-amberCore" : "text-cyanCore";
-        const borderClass = card.tone === "amber" ? "border-amberCore/45 bg-amberCore/10" : "border-cyanLine bg-cyanCore/10";
+        let toneClass = "text-cyanCore";
+        let borderClass = "border-cyanLine bg-cyanCore/20";
+        let barClass = "bg-cyanCore/80";
+
+        if (card.tone === "amber") {
+          toneClass = "text-amberCore";
+          borderClass = "border-amberCore/45 bg-amberCore/20";
+          barClass = "bg-amberCore/80";
+        } else if (card.tone === "orange") {
+          toneClass = "text-orangeCore";
+          borderClass = "border-orangeCore/45 bg-orangeCore/20";
+          barClass = "bg-orangeCore/80";
+        } else if (card.tone === "red") {
+          toneClass = "text-redCore";
+          borderClass = "border-redCore/45 bg-redCore/20";
+          barClass = "bg-redCore/80";
+        }
+
         const comparisonClass = isComparison ? "min-h-[8.5rem] items-center text-center" : "min-h-[5.75rem]";
 
         return (
@@ -103,7 +119,7 @@ function PanelMetricGrid({ cards }: PanelMetricGridProps) {
               {card.value} <span className="text-sm font-semibold text-inkMuted">{card.unit}</span>
             </div>
             {isComparison ? (
-              <div className={`h-1 w-16 rounded-full ${card.tone === "amber" ? "bg-amberCore/80" : "bg-cyanCore/80"}`} />
+              <div className={`h-1 w-16 rounded-full ${barClass}`} />
             ) : null}
           </div>
         );

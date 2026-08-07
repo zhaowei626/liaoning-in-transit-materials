@@ -1,12 +1,13 @@
 /**
  * 格式化金额：保留2位小数并补位
  */
-export function formatAmount(value: number | string): string {
+export function formatAmount(value: number | string, useGrouping: boolean = true): string {
   const num = typeof value === "string" ? parseFloat(value.replace(/,/g, "")) : value;
   if (isNaN(num)) return "--";
   return num.toLocaleString("zh-CN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
+    useGrouping: useGrouping,
   });
 }
 

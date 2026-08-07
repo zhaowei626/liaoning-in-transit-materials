@@ -34,7 +34,7 @@ export function VirtualKpiCard({ card }: VirtualKpiCardProps) {
         {card.metrics.map((metric, idx) => {
           const displayValue = metric.isQuantity
             ? formatQuantity(metric.value)
-            : formatAmount(metric.value);
+            : formatAmount(metric.value, !isOverall);
             
           const toneClass = metric.tone === "amber" || isAlert
             ? "text-amberCore"

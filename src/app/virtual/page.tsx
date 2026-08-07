@@ -4,6 +4,7 @@ import MainHeader from "../../components/MainHeader";
 import { FooterRail } from "../../components/FooterRail";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
+import Link from "next/link";
 import { 
   virtualKpis, 
   cityDistributionPanel, 
@@ -149,9 +150,12 @@ export default function VirtualWarehousePage() {
       <main className="flex-1 flex flex-col gap-4 mt-8">
         {/* Header meta info */}
         <div className="flex justify-end px-1 mb-2">
-          <span className="text-sm font-medium text-cyanCore/80 bg-cyanCore/10 px-3 py-1 rounded-full border border-cyanCore/20">
+          <Link 
+            href="/virtual/city"
+            className="text-sm font-medium text-cyanCore/80 bg-cyanCore/10 px-3 py-1 rounded-full border border-cyanCore/20 hover:bg-cyanCore/20 transition-colors cursor-pointer"
+          >
             更新日期：2026-08-02
-          </span>
+          </Link>
         </div>
 
         {/* First Row: KPI Cards */}
