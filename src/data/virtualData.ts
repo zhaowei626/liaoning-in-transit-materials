@@ -56,14 +56,14 @@ export const virtualKpis: VirtualKpiData[] = [
     id: "v9700",
     title: "废旧物资现场虚拟库(9700)",
     metrics: [
-      { label: "当前库存", value: 12450, unit: "条", isQuantity: true }
+      { label: "当前条目", value: 12450, unit: "条", isQuantity: true, trend: 156 }
     ]
   },
   {
     id: "v9800",
     title: "废旧物资拆解暂存库(9800)",
     metrics: [
-      { label: "当前库存", value: 8530, unit: "条", isQuantity: true }
+      { label: "当前条目", value: 8530, unit: "条", isQuantity: true, trend: -42 }
     ]
   },
   {
@@ -77,32 +77,53 @@ export const virtualKpis: VirtualKpiData[] = [
   }
 ];
 
-// Area 1: 9100/9500物资库龄超14天情况滚动记录
-export interface AgingRecord {
-  id: string;
-  warehouse: string;
-  city: string;
-  count: number;
-}
+// Area 1: 9700/9800条目按单位分布情况
+export const distribution9700_9800Chart: ChartDataSet = {
+  unit: "条",
+  labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
+  datasets: [
+    { label: "9700条目", data: [1250, 1840, 950, 820, 1100, 680, 1420, 890, 750, 920, 680, 840, 790, 710], tone: "amber", type: "line" },
+    { label: "9800条目", data: [850, 1200, 620, 540, 780, 420, 960, 590, 480, 560, 420, 510, 490, 450], tone: "cyan", type: "line" }
+  ]
+};
 
-export const agingRecords: AgingRecord[] = [
-  { id: "1", warehouse: "项目直发现场虚拟库", city: "沈阳", count: 2 },
-  { id: "2", warehouse: "非项目直发现场虚拟库", city: "大连", count: 5 },
-  { id: "3", warehouse: "项目直发现场虚拟库", city: "鞍山", count: 1 },
-  { id: "4", warehouse: "非项目直发现场虚拟库", city: "抚顺", count: 3 },
-  { id: "5", warehouse: "项目直发现场虚拟库", city: "本溪", count: 4 },
-  { id: "6", warehouse: "非项目直发现场虚拟库", city: "丹东", count: 2 },
-  { id: "7", warehouse: "项目直发现场虚拟库", city: "锦州", count: 6 },
-  { id: "8", warehouse: "非项目直发现场虚拟库", city: "营口", count: 1 },
-  { id: "9", warehouse: "项目直发现场虚拟库", city: "辽阳", count: 3 },
-  { id: "10", warehouse: "非项目直发现场虚拟库", city: "铁岭", count: 4 }
-];
-
-export const over14DaysDistributionPanel: ChartPanelData = {
-  id: "v9100-v9500-over14",
-  title: "9100/9500物资库龄超14天情况",
+export const distribution9700_9800Panel: ChartPanelData = {
+  id: "v9700-v9800-distribution",
+  title: "废旧物资现场虚拟库(9700)/废旧物资拆解暂存库(9800)条目按单位分布情况",
   type: "line",
-  chart: { labels: [], datasets: [] }, // 保持兼容性，实际页面中将渲染为滚动列表
+  chart: distribution9700_9800Chart,
+  className: "h-full",
+  tabs: [
+    { id: "city", label: "各地市", active: true, href: "#" },
+    { id: "unit", label: "各业务单位", active: false, href: "#" }
+  ]
+};
+
+// Area 4: 各类虚拟库数据增减情况 (双向柱图)
+export const virtualAmountChangeChart: ChartDataSet = {
+  unit: "万元",
+  labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛", "物资公司", "超高压公司", "建设公司", "检修公司"],
+  datasets: [
+    { label: "增加金额", data: [450, 620, 380, 550, 420, 300, 480, 350, 280, 400, 320, 360, 300, 250, 1200, 850, 950, 700], tone: "cyan", type: "bar" },
+    { label: "减少金额", data: [-250, -380, -450, -200, -550, -220, -300, -420, -200, -280, -400, -250, -220, -300, -800, -950, -600, -850], tone: "amber", type: "bar" }
+  ]
+};
+
+export const virtualQuantityChangeChart: ChartDataSet = {
+  unit: "条",
+  labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛", "物资公司", "超高压公司", "建设公司", "检修公司"],
+  datasets: [
+    { label: "增加条目", data: [45, 62, 38, 55, 42, 30, 48, 35, 28, 40, 32, 36, 30, 25, 120, 85, 95, 70], tone: "cyan", type: "bar" },
+    { label: "减少条目", data: [-25, -38, -45, -20, -55, -22, -30, -42, -20, -28, -40, -25, -22, -30, -80, -95, -60, -85], tone: "amber", type: "bar" }
+  ]
+};
+
+export const virtualDataChangePanel: ChartPanelData = {
+  id: "virtual-data-change",
+  title: "各类虚拟库数据增减情况",
+  type: "bar",
+  stacked: true,
+  chart: virtualAmountChangeChart, // 默认显示金额
   className: "h-full"
 };
 

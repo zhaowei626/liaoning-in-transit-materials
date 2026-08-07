@@ -16,9 +16,10 @@ const DashboardChart = dynamic(
 export interface ChartPanelProps
   extends Readonly<{
     panel: ChartPanelData;
+    extra?: React.ReactNode;
   }> {}
 
-export function ChartPanel({ panel }: ChartPanelProps) {
+export function ChartPanel({ panel, extra }: ChartPanelProps) {
   const hasMetricCards = Boolean(panel.metricCards?.length);
   const isHorizontalBar = panel.layout === "horizontal-bar";
   const isSupplierTop = panel.layout === "supplier-top";
@@ -56,6 +57,8 @@ export function ChartPanel({ panel }: ChartPanelProps) {
               </Link>
             ))}
           </div>
+        ) : extra ? (
+          <div className="flex shrink-0">{extra}</div>
         ) : null}
       </div>
       {isSupplierTop ? (

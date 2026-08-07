@@ -7,7 +7,10 @@ import { useClock } from "@/hooks/useClock";
 import { 
   virtualKpis, 
   cityDistributionPanel, 
-  agingRecords,
+  distribution9700_9800Panel,
+  virtualDataChangePanel,
+  virtualAmountChangeChart,
+  virtualQuantityChangeChart,
   city9300DistributionPanel,
   borrowedOver180DaysPanel,
 } from "@/data/virtualData";
@@ -16,55 +19,111 @@ import { ChartPanel } from "../../components/ChartPanel";
 import { TechPanel } from "../../components/TechPanel";
 import { SectionTitle } from "../../components/SectionTitle";
 import { useEffect, useState, useRef } from "react";
+import { Calendar, ChevronDown, Filter, Check } from "lucide-react";
 
-function AgingScrollingList({ records }: { records: any[] }) {
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+const VIRTUAL_WAREHOUSE_TYPES = [
+  { id: '9100', label: '项目直发现场虚拟库 (9100)' },
+  { id: '9300', label: '物资借用虚拟库 (9300)' },
+  { id: '9400', label: '中转虚拟库 (9400)' },
+  { id: '9500', label: '非项目直发虚拟库 (9500)' },
+  { id: '9700', label: '废旧物资现场虚拟库 (9700)' },
+  { id: '9800', label: '废旧物资拆解暂存库 (9800)' },
+];
+
+function ChartFilters({ 
+  selectedType, 
+  onTypeChange 
+}: { 
+  selectedType: string; 
+  onTypeChange: (id: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  const currentType = VIRTUAL_WAREHOUSE_TYPES.find(t => t.id === selectedType) || VIRTUAL_WAREHOUSE_TYPES[0];
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setScrollOffset((prev) => {
-        const next = prev + 1;
-        if (containerRef.current && next >= containerRef.current.scrollHeight / 2) {
-          return 0;
-        }
-        return next;
-      });
-    }, 50);
-    return () => clearInterval(timer);
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <div className="flex-1 overflow-hidden relative mt-2 px-2">
-      <div 
-        ref={containerRef}
-        className="flex flex-col gap-2"
-        style={{ transform: `translateY(-${scrollOffset}px)` }}
-      >
-        {[...records, ...records].map((record, idx) => (
-          <div 
-            key={`${record.id}-${idx}`} 
-            className="flex items-center justify-center gap-3 bg-cyanCore/5 border border-cyanLine/20 rounded px-4 py-2 text-sm text-slate-200"
-          >
-            <span className="text-cyanCore font-bold w-40 text-center">{record.warehouse}</span>
-            <span className="text-slate-400">|</span>
-            <span className="w-16 text-center">{record.city}</span>
-            <span className="text-slate-400">|</span>
-            <div className="flex-1 text-center">
-              有<span className="text-amberCore font-bold mx-1">{record.count}</span>条物资记录的库龄已超14天
+    <div className="flex items-center gap-4 bg-slate-800/40 px-4 py-2 rounded-lg border border-slate-700/50">
+      <div className="flex items-center gap-2">
+        <Filter className="w-3.5 h-3.5 text-cyanCore" />
+        <span className="text-xs text-slate-400 font-medium">筛选条件:</span>
+      </div>
+      
+      {/* 统计日期范围 */}
+      <div className="flex items-center gap-2 group cursor-pointer">
+        <Calendar className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyanCore transition-colors" />
+        <div className="flex flex-col">
+          <span className="text-[10px] text-slate-500 leading-none">统计日期范围</span>
+          <div className="flex items-center gap-1 mt-0.5">
+            <span className="text-xs text-slate-200">2026-07-01 ~ 2026-08-01</span>
+            <ChevronDown className="w-3 h-3 text-slate-500" />
+          </div>
+        </div>
+      </div>
+
+      <div className="w-px h-6 bg-slate-700/50" />
+
+      {/* 虚拟库类型 (交互下拉框) */}
+      <div className="relative" ref={dropdownRef}>
+        <div 
+          className="flex items-center gap-2 group cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <div className="flex flex-col">
+            <span className="text-[10px] text-slate-500 leading-none">虚拟库类型</span>
+            <div className="flex items-center gap-1 mt-0.5">
+              <span className="text-xs text-slate-200">{currentType.label}</span>
+              <ChevronDown className={`w-3 h-3 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
             </div>
           </div>
-        ))}
+        </div>
+
+        {isOpen && (
+          <div className="absolute top-full right-0 mt-2 w-64 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-50 py-1 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+            {VIRTUAL_WAREHOUSE_TYPES.map((type) => (
+              <div
+                key={type.id}
+                className={`flex items-center justify-between px-3 py-2 text-xs cursor-pointer transition-colors ${
+                  selectedType === type.id 
+                    ? 'bg-cyanCore/20 text-cyanCore' 
+                    : 'text-slate-300 hover:bg-slate-700/50'
+                }`}
+                onClick={() => {
+                  onTypeChange(type.id);
+                  setIsOpen(false);
+                }}
+              >
+                <span>{type.label}</span>
+                {selectedType === type.id && <Check className="w-3 h-3" />}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      {/* 渐变遮罩 */}
-      <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-panelStrong to-transparent pointer-events-none z-10" />
-      <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-panelStrong to-transparent pointer-events-none z-10" />
     </div>
   );
 }
 
 export default function VirtualWarehousePage() {
   const clock = useClock();
+  const [selectedWarehouseType, setSelectedWarehouseType] = useState('9100');
+
+  // 根据选中的类型动态切换图表数据
+  const isQuantityType = ['9700', '9800'].includes(selectedWarehouseType);
+  const dynamicChangePanel = {
+    ...virtualDataChangePanel,
+    chart: isQuantityType ? virtualQuantityChangeChart : virtualAmountChangeChart
+  };
 
   return (
     <div className="dashboard-shell min-h-screen w-full overflow-x-hidden p-dashboard text-slate-100 dark:text-slate-100 flex flex-col">
@@ -79,9 +138,9 @@ export default function VirtualWarehousePage() {
         </div>
 
         {/* First Row: KPI Cards */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
           {virtualKpis
-            .filter(kpi => !['v9700', 'v9800', 'alert'].includes(kpi.id))
+            .filter(kpi => !['alert'].includes(kpi.id))
             .map((kpi) => (
               <VirtualKpiCard key={kpi.id} card={kpi} />
             ))
@@ -95,11 +154,10 @@ export default function VirtualWarehousePage() {
             <ChartPanel panel={cityDistributionPanel} />
           </div>
 
-          {/* Area 1: 9100/9500物资库龄超14天情况 (Scrolling List) */}
-          <TechPanel className="col-span-1 lg:col-span-1 flex flex-col overflow-hidden p-4">
-            <SectionTitle title="9100/9500物资库龄超14天情况" />
-            <AgingScrollingList records={agingRecords} />
-          </TechPanel>
+          {/* Area 1: 9700/9800条目分布情况 */}
+          <div className="flex flex-col overflow-hidden">
+            <ChartPanel panel={distribution9700_9800Panel} />
+          </div>
         </section>
 
         {/* Third Row: 9300 Charts */}
@@ -113,6 +171,19 @@ export default function VirtualWarehousePage() {
           <div className="flex flex-col overflow-hidden">
             <ChartPanel panel={borrowedOver180DaysPanel} />
           </div>
+        </section>
+
+        {/* Fourth Row: Virtual Data Change (Double-sided Bar Chart) */}
+        <section className="h-[320px]">
+          <ChartPanel 
+            panel={dynamicChangePanel} 
+            extra={
+              <ChartFilters 
+                selectedType={selectedWarehouseType} 
+                onTypeChange={setSelectedWarehouseType} 
+              />
+            }
+          />
         </section>
 
       </main>

@@ -10,7 +10,7 @@ export interface VirtualKpiCardProps {
 export function VirtualKpiCard({ card }: VirtualKpiCardProps) {
   const isOverall = card.id === "overall";
   const isAlert = card.id === "alert";
-  const isAmountVertical = ["overall", "v9100", "v9300", "v9400", "v9500"].includes(card.id);
+  const isAmountVertical = ["overall", "v9100", "v9300", "v9400", "v9500", "v9700", "v9800"].includes(card.id);
 
   return (
     <TechPanel className={`flex flex-col p-4 min-h-[140px] cursor-pointer hover:bg-slate-800/20 transition-colors group ${
@@ -71,7 +71,7 @@ export function VirtualKpiCard({ card }: VirtualKpiCardProps) {
                     <span className={`text-xs font-display font-semibold ${
                       metric.trend > 0 ? 'text-red-400' : metric.trend < 0 ? 'text-emerald-400' : 'text-slate-400'
                     }`}>
-                      {Math.abs(metric.trend).toFixed(1)} {metric.unit}
+                      {Math.abs(metric.trend).toFixed(metric.isQuantity ? 0 : 2)} {metric.unit}
                     </span>
                   </div>
                 </div>
