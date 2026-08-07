@@ -196,7 +196,7 @@ export default function VirtualWarehouseCityPage() {
             href="/virtual"
             className="text-sm font-medium text-cyanCore/80 bg-cyanCore/10 px-3 py-1 rounded-full border border-cyanCore/20 hover:bg-cyanCore/20 transition-colors cursor-pointer"
           >
-            更新日期：2026-08-02
+            数据更新日期：2026-08-02
           </Link>
         </div>
 
