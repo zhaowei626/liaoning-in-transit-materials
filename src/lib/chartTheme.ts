@@ -62,7 +62,14 @@ export function createBarChartData(chart: ChartDataSet) {
         opacity = 0.4 + (0.6 * (toneIdx / (toneCount - 1)));
       }
       
-      const baseColor = dataset.tone === "cyan" ? "0, 242, 255" : "255, 191, 0";
+      const color = toneColors[dataset.tone];
+      // Convert hex to rgb for rgba usage
+      const hexToRgb = (hex: string) => {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "0, 242, 255";
+      };
+      
+      const baseColor = hexToRgb(color);
 
       return {
         type: "bar" as const,
@@ -70,7 +77,7 @@ export function createBarChartData(chart: ChartDataSet) {
         data: dataset.data,
         backgroundColor: `rgba(${baseColor}, ${opacity})`,
         borderColor: `rgba(${baseColor}, 1)`,
-        borderWidth: toneCount > 1 ? 1 : 0, // Add border to distinguish stacked segments
+        borderWidth: toneCount > 1 ? 1 : 0, 
         borderRadius: 2,
         barThickness: 15,
         yAxisID: dataset.yAxisID,

@@ -159,14 +159,14 @@ export default function VirtualWarehouseCityPage() {
       { 
         label: "入库条目", 
         data: [0, 0, 0, 0, 156, 42], 
-        tone: "indigo", 
+        tone: "emerald", 
         type: "bar",
         yAxisID: "y1"
       },
       { 
         label: "出库条目", 
         data: [0, 0, 0, 0, 85, 28], 
-        tone: "orange", 
+        tone: "indigo", 
         type: "bar",
         yAxisID: "y1"
       }
