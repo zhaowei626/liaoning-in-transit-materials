@@ -94,6 +94,6 @@ export interface ChartPanelData {
   chart: ChartDataSet;
   tabs?: NavigationItem[];
   stacked?: boolean;
-  summary?: { label: string; value: string; unit: string }[];
+  summary?: { label: string; value: string; unit: string; tone?: MetricTone }[];
   metricCards?: PanelMetricCard[];
 }

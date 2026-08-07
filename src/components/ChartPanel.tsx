@@ -31,13 +31,16 @@ export function ChartPanel({ panel, extra }: ChartPanelProps) {
           <SectionTitle className="min-w-0" title={panel.title} />
           {panel.summary ? (
             <div className="flex gap-4">
-              {panel.summary.map((item, idx) => (
-                <div key={idx} className="flex items-baseline gap-1.5">
-                  <span className="text-xs text-inkMuted">{item.label}:</span>
-                  <span className="font-display text-lg font-bold text-cyanCore">{item.value}</span>
-                  <span className="text-xs text-inkMuted">{item.unit}</span>
-                </div>
-              ))}
+              {panel.summary.map((item, idx) => {
+                const toneClass = item.tone === "amber" ? "text-amberCore" : "text-cyanCore";
+                return (
+                  <div key={idx} className="flex items-baseline gap-1.5">
+                    <span className="text-xs text-inkMuted">{item.label}:</span>
+                    <span className={`font-display text-lg font-bold ${toneClass}`}>{item.value}</span>
+                    <span className="text-xs text-inkMuted">{item.unit}</span>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
         </div>

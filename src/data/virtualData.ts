@@ -99,13 +99,13 @@ export const distribution9700_9800Panel: ChartPanelData = {
   ]
 };
 
-// Area 4: 各类虚拟库数据增减情况 (双向柱图)
+// Area 4: 各类虚拟库数据增减情况 (双柱图)
 export const virtualAmountChangeChart: ChartDataSet = {
   unit: "万元",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛", "物资公司", "超高压公司", "建设公司", "检修公司"],
   datasets: [
-    { label: "增加金额", data: [450, 620, 380, 550, 420, 300, 480, 350, 280, 400, 320, 360, 300, 250, 1200, 850, 950, 700], tone: "cyan", type: "bar" },
-    { label: "减少金额", data: [-250, -380, -450, -200, -550, -220, -300, -420, -200, -280, -400, -250, -220, -300, -800, -950, -600, -850], tone: "amber", type: "bar" }
+    { label: "入库金额", data: [450, 620, 380, 550, 420, 300, 480, 350, 280, 400, 320, 360, 300, 250, 1200, 850, 950, 700], tone: "cyan", type: "bar" },
+    { label: "出库金额", data: [250, 380, 450, 200, 550, 220, 300, 420, 200, 280, 400, 250, 220, 300, 800, 950, 600, 850], tone: "amber", type: "bar" }
   ]
 };
 
@@ -113,16 +113,16 @@ export const virtualQuantityChangeChart: ChartDataSet = {
   unit: "条",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛", "物资公司", "超高压公司", "建设公司", "检修公司"],
   datasets: [
-    { label: "增加条目", data: [45, 62, 38, 55, 42, 30, 48, 35, 28, 40, 32, 36, 30, 25, 120, 85, 95, 70], tone: "cyan", type: "bar" },
-    { label: "减少条目", data: [-25, -38, -45, -20, -55, -22, -30, -42, -20, -28, -40, -25, -22, -30, -80, -95, -60, -85], tone: "amber", type: "bar" }
+    { label: "入库条目", data: [45, 62, 38, 55, 42, 30, 48, 35, 28, 40, 32, 36, 30, 25, 120, 85, 95, 70], tone: "cyan", type: "bar" },
+    { label: "出库条目", data: [25, 38, 45, 20, 55, 22, 30, 42, 20, 28, 40, 25, 22, 30, 80, 95, 60, 85], tone: "amber", type: "bar" }
   ]
 };
 
 export const virtualDataChangePanel: ChartPanelData = {
   id: "virtual-data-change",
-  title: "各类虚拟库数据增减情况",
+  title: "各类虚拟库库存增减情况",
   type: "bar",
-  stacked: true,
+  stacked: false,
   chart: virtualAmountChangeChart, // 默认显示金额
   className: "h-full"
 };

@@ -16,12 +16,11 @@ import {
 } from "@/data/virtualData";
 import { VirtualKpiCard } from "../../components/VirtualKpiCard";
 import { ChartPanel } from "../../components/ChartPanel";
-import { TechPanel } from "../../components/TechPanel";
-import { SectionTitle } from "../../components/SectionTitle";
 import { useEffect, useState, useRef } from "react";
 import { Calendar, ChevronDown, Filter, Check } from "lucide-react";
 
 const VIRTUAL_WAREHOUSE_TYPES = [
+  { id: 'all', label: '全部' },
   { id: '9100', label: '项目直发现场虚拟库 (9100)' },
   { id: '9300', label: '物资借用虚拟库 (9300)' },
   { id: '9400', label: '中转虚拟库 (9400)' },
@@ -116,13 +115,26 @@ function ChartFilters({
 
 export default function VirtualWarehousePage() {
   const clock = useClock();
-  const [selectedWarehouseType, setSelectedWarehouseType] = useState('9100');
+  const [selectedWarehouseType, setSelectedWarehouseType] = useState('all');
 
   // 根据选中的类型动态切换图表数据
   const isQuantityType = ['9700', '9800'].includes(selectedWarehouseType);
+  const chartData = isQuantityType ? virtualQuantityChangeChart : virtualAmountChangeChart;
+  
+  const totalIn = chartData.datasets[0].data.reduce((acc, val) => acc + val, 0);
+   const totalOut = chartData.datasets[1].data.reduce((acc, val) => acc + val, 0);
+  
+  const inLabel = isQuantityType ? "总入库条目" : "总入库金额";
+  const outLabel = isQuantityType ? "总出库条目" : "总出库金额";
+  const unit = chartData.unit || "";
+
   const dynamicChangePanel = {
     ...virtualDataChangePanel,
-    chart: isQuantityType ? virtualQuantityChangeChart : virtualAmountChangeChart
+    chart: chartData,
+    summary: [
+      { label: inLabel, value: totalIn.toLocaleString(), unit: unit, tone: 'cyan' as const },
+      { label: outLabel, value: totalOut.toLocaleString(), unit: unit, tone: 'amber' as const }
+    ]
   };
 
   return (
