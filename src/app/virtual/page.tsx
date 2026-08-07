@@ -128,12 +128,17 @@ export default function VirtualWarehousePage() {
   const outLabel = isQuantityType ? "总出库条目" : "总出库金额";
   const unit = chartData.unit || "";
 
+  const formatValue = (val: number, isQty: boolean) => {
+    if (isQty) return val.toString();
+    return val.toFixed(2);
+  };
+
   const dynamicChangePanel = {
     ...virtualDataChangePanel,
     chart: chartData,
     summary: [
-      { label: inLabel, value: totalIn.toLocaleString(), unit: unit, tone: 'cyan' as const },
-      { label: outLabel, value: totalOut.toLocaleString(), unit: unit, tone: 'amber' as const }
+      { label: inLabel, value: formatValue(totalIn, isQuantityType), unit: unit, tone: 'cyan' as const },
+      { label: outLabel, value: formatValue(totalOut, isQuantityType), unit: unit, tone: 'amber' as const }
     ]
   };
 
