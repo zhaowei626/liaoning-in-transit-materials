@@ -25,7 +25,7 @@ export function ChartPanel({ panel, extra }: ChartPanelProps) {
   const isSupplierTop = panel.layout === "supplier-top";
 
   return (
-    <TechPanel className={`flex ${panel.className ? "min-h-full" : "min-h-[16rem]"} flex-col p-4`}>
+    <TechPanel className={`flex ${panel.className ? "min-h-full" : "min-h-[16rem]"} ${panel.className ?? ""} flex-col p-4`}>
       <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-6">
           <SectionTitle className="min-w-0" title={panel.title} />

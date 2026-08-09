@@ -1,18 +1,7 @@
 "use client";
 
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Filler,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip
-} from "chart.js";
-import type { ActiveElement, Chart as ChartInstance, ChartEvent } from "chart.js";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Chart as ChartJS, registerables } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
 import {
   barChartOptions,
@@ -22,47 +11,8 @@ import {
 } from "@/lib/chartTheme";
 import type { ChartDataSet, ChartPanelData } from "@/types/dashboard";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, Tooltip, Legend);
-
-function resolveLinkedLabelHref(
-  event: ChartEvent,
-  elements: ActiveElement[],
-  chartInstance: ChartInstance,
-  labels: string[],
-  labelLinks?: Record<string, string>
-) {
-  if (!labelLinks) {
-    return null;
-  }
-
-  let labelIndex = elements[0]?.index;
-
-  if (labelIndex === undefined) {
-    const xScale = chartInstance.scales.x;
-
-    if (xScale && typeof event.x === "number" && typeof event.y === "number") {
-      const isInsideHorizontalScale = event.x >= xScale.left && event.x <= xScale.right;
-      const isInsideLabelBand = event.y >= chartInstance.chartArea.bottom && event.y <= xScale.bottom;
-
-      if (!isInsideHorizontalScale || !isInsideLabelBand) {
-        return null;
-      }
-
-      const rawIndex = xScale.getValueForPixel(event.x);
-      const parsedIndex = typeof rawIndex === "number" ? rawIndex : Number(rawIndex);
-
-      if (Number.isFinite(parsedIndex)) {
-        labelIndex = Math.round(parsedIndex);
-      }
-    }
-  }
-
-  if (labelIndex === undefined || labelIndex < 0 || labelIndex >= labels.length) {
-    return null;
-  }
-
-  return labelLinks[labels[labelIndex]] ?? null;
-}
+// Register Chart.js components globally
+ChartJS.register(...registerables);
 
 export interface DashboardChartProps
   extends Readonly<{
@@ -72,10 +22,20 @@ export interface DashboardChartProps
   }> {}
 
 export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
-  const router = useRouter();
-  
-  if (!chart) {
-    return <div className="flex h-full items-center justify-center text-slate-500">图表数据尚未准备好</div>;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Double ensure registration on client side
+    ChartJS.register(...registerables);
+  }, []);
+
+  if (!isClient || !chart) {
+    return (
+      <div className="flex h-full items-center justify-center text-slate-500 text-xs">
+        正在加载图表数据...
+      </div>
+    );
   }
 
   const yAxisTitle = chart.unit ? {
@@ -97,26 +57,13 @@ export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
         }
       }
     };
-    return <Line data={createLineChartData(chart)} options={lineOptions} />;
+    return <Line data={createLineChartData(chart)} options={lineOptions as any} />;
   }
 
   const hasY1 = chart.datasets.some(d => d.yAxisID === "y1");
 
   const options = {
     ...barChartOptions,
-    ...(chart.labelLinks ? {
-      onClick: (event: ChartEvent, elements: ActiveElement[], chartInstance: ChartInstance) => {
-        const href = resolveLinkedLabelHref(event, elements, chartInstance, chart.labels, chart.labelLinks);
-
-        if (href) {
-          router.push(href);
-        }
-      },
-      onHover: (event: ChartEvent, elements: ActiveElement[], chartInstance: ChartInstance) => {
-        const href = resolveLinkedLabelHref(event, elements, chartInstance, chart.labels, chart.labelLinks);
-        chartInstance.canvas.style.cursor = href ? "pointer" : "default";
-      }
-    } : {}),
     scales: {
       ...barChartOptions.scales,
       x: {
@@ -130,6 +77,7 @@ export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
       },
       ...(hasY1 ? {
         y1: {
+          type: "linear" as const,
           position: "right" as const,
           grid: { display: false },
           title: chart.secondaryUnit ? {
@@ -140,11 +88,7 @@ export function DashboardChart({ type, chart, stacked }: DashboardChartProps) {
             font: { size: 10 }
           } : undefined,
           ticks: {
-            color: "#64748b",
-            callback: (value: any) => {
-              if (chart.secondaryUnit) return `${value}`;
-              return chart.unit?.includes("/") ? `${value}` : `${value}%`;
-            }
+            color: "#64748b"
           }
         }
       } : {})

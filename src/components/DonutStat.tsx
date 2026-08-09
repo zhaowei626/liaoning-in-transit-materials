@@ -1,11 +1,8 @@
 "use client";
 
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
 import type { MetricItem } from "@/types/dashboard";
-import { resolveToneColor } from "@/lib/chartTheme";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface DonutStatProps {
   metrics: MetricItem[];
@@ -23,16 +20,15 @@ export function DonutStat({ metrics, cardId }: DonutStatProps) {
   const totalAmount = (batchAmountVal + ecoAmountVal).toFixed(2);
   const unit = batchAmount?.unit ?? "亿";
 
-  // Use distinct colors based on cardId
-  let batchColor = "#00f2ff"; // standard cyan
-  let ecoColor = "#ffb000"; // standard amber
+  let batchColor = "#00f2ff";
+  let ecoColor = "#ffb000";
 
   if (cardId === "receipt") {
-    batchColor = "#00d4ff"; // slightly deeper cyan
-    ecoColor = "#ff9500"; // slightly deeper amber
+    batchColor = "#00d4ff";
+    ecoColor = "#ff9500";
   } else if (cardId === "delivery-confirmation") {
-    batchColor = "#00b6ff"; // even deeper cyan
-    ecoColor = "#ff7a00"; // even deeper amber
+    batchColor = "#00b6ff";
+    ecoColor = "#ff7a00";
   }
 
   const data = {
@@ -53,7 +49,7 @@ export function DonutStat({ metrics, cardId }: DonutStatProps) {
     cutout: "75%",
     plugins: {
       legend: {
-        display: false // Hide default legend to use our custom one
+        display: false
       },
       tooltip: {
         backgroundColor: "rgba(8, 20, 40, 0.94)",
@@ -78,7 +74,7 @@ export function DonutStat({ metrics, cardId }: DonutStatProps) {
           <span className="text-[10px] text-inkMuted dark:text-inkMuted">总金额 ({unit})</span>
         </div>
         <div className="relative z-10 h-full w-full">
-          <Doughnut data={data} options={options} />
+          <Doughnut data={data} options={options as any} />
         </div>
       </div>
 
