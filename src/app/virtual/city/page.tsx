@@ -79,14 +79,14 @@ export default function VirtualWarehouseCityPage() {
 
   // 第二行：混合图表数据
   const mixedChartData: ChartDataSet = {
-    labels: ['9100', '9300', '9400', '9500', '9700', '9800'],
+    labels: ['项目直发现场库', '物资借用库', '中转虚拟库', '非项目直发库', '废旧物资现场库', '废旧物资拆解库'],
     unit: "万元",
     secondaryUnit: "条",
     datasets: [
       { label: "入库金额", data: [470, 300, 320, 210, 0, 0], tone: "cyan", type: "bar" },
       { label: "出库金额", data: [250, 180, 200, 120, 0, 0], tone: "amber", type: "bar" },
-      { label: "入库条目", data: [0, 0, 0, 0, 156, 42], tone: "emerald", type: "bar", yAxisID: "y1" },
-      { label: "出库条目", data: [0, 0, 0, 0, 85, 28], tone: "indigo", type: "bar", yAxisID: "y1" }
+      { label: "入库条目", data: [0, 0, 0, 0, 156, 42], tone: "emerald", type: "line", yAxisID: "y1" },
+      { label: "出库条目", data: [0, 0, 0, 0, 85, 28], tone: "indigo", type: "line", yAxisID: "y1" }
     ]
   };
   

@@ -26,42 +26,42 @@ export const virtualKpis: VirtualKpiData[] = [
   },
   {
     id: "v9100",
-    title: "项目直发现场虚拟库(9100)",
+    title: "项目直发现场库",
     metrics: [
       { label: "当前库存", value: 125.8, unit: "亿元", trend: -3.2 }
     ]
   },
   {
     id: "v9300",
-    title: "物资借用虚拟库(9300)",
+    title: "物资借用库",
     metrics: [
       { label: "当前库存", value: 85.4, unit: "亿元", trend: 5.1 }
     ]
   },
   {
     id: "v9400",
-    title: "中转虚拟库(9400)",
+    title: "中转虚拟库",
     metrics: [
       { label: "当前库存", value: 142.1, unit: "亿元", trend: 8.4 }
     ]
   },
   {
     id: "v9500",
-    title: "非项目直发虚拟库(9500)",
+    title: "非项目直发库",
     metrics: [
       { label: "当前库存", value: 99.0, unit: "亿元", trend: -1.5 }
     ]
   },
   {
     id: "v9700",
-    title: "废旧物资现场虚拟库(9700)",
+    title: "废旧物资现场库",
     metrics: [
       { label: "当前条目", value: 12450, unit: "条", isQuantity: true, trend: 156 }
     ]
   },
   {
     id: "v9800",
-    title: "废旧物资拆解暂存库(9800)",
+    title: "废旧物资拆解库",
     metrics: [
       { label: "当前条目", value: 8530, unit: "条", isQuantity: true, trend: -42 }
     ]
@@ -82,14 +82,14 @@ export const distribution9700_9800Chart: ChartDataSet = {
   unit: "条",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
   datasets: [
-    { label: "9700条目", data: [1250, 1840, 950, 820, 1100, 680, 1420, 890, 750, 920, 680, 840, 790, 710], tone: "amber", type: "line" },
-    { label: "9800条目", data: [850, 1200, 620, 540, 780, 420, 960, 590, 480, 560, 420, 510, 490, 450], tone: "cyan", type: "line" }
+    { label: "废旧物资现场库条目", data: [1250, 1840, 950, 820, 1100, 680, 1420, 890, 750, 920, 680, 840, 790, 710], tone: "amber", type: "line" },
+    { label: "废旧物资拆解库条目", data: [850, 1200, 620, 540, 780, 420, 960, 590, 480, 560, 420, 510, 490, 450], tone: "cyan", type: "line" }
   ]
 };
 
 export const distribution9700_9800Panel: ChartPanelData = {
   id: "v9700-v9800-distribution",
-  title: "废旧物资现场虚拟库(9700)/废旧物资拆解暂存库(9800)条目按单位分布情况",
+  title: "旧物资现场库/废旧物资拆解库条目按单位分布情况",
   type: "line",
   chart: distribution9700_9800Chart,
   className: "h-full",
@@ -133,10 +133,10 @@ export const cityDistributionChart: ChartDataSet = {
   secondaryUnit: "条",
   labels: ["沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"],
   datasets: [
-    { label: "9100库存", data: [470, 585, 370, 325, 435, 300, 415, 358, 278, 335, 255, 312, 290, 268], tone: "cyan", type: "bar" },
-    { label: "9500库存", data: [200, 250, 150, 135, 185, 120, 175, 150, 110, 138, 100, 125, 117, 105], tone: "amber", type: "bar" },
-    { label: "9100条目", data: [420, 520, 330, 290, 390, 260, 360, 310, 240, 290, 220, 270, 250, 230], tone: "cyan-light", type: "line", yAxisID: "y1" },
-    { label: "9500条目", data: [320, 400, 240, 210, 300, 190, 270, 230, 180, 215, 160, 200, 185, 170], tone: "amber-light", type: "line", yAxisID: "y1" }
+    { label: "项目直发现场库库存", data: [470, 585, 370, 325, 435, 300, 415, 358, 278, 335, 255, 312, 290, 268], tone: "cyan", type: "bar" },
+    { label: "非项目直发库库存", data: [200, 250, 150, 135, 185, 120, 175, 150, 110, 138, 100, 125, 117, 105], tone: "amber", type: "bar" },
+    { label: "项目直发现场库条目", data: [420, 520, 330, 290, 390, 260, 360, 310, 240, 290, 220, 270, 250, 230], tone: "cyan-light", type: "line", yAxisID: "y1" },
+    { label: "非项目直发库条目", data: [320, 400, 240, 210, 300, 190, 270, 230, 180, 215, 160, 200, 185, 170], tone: "amber-light", type: "line", yAxisID: "y1" }
   ]
 };
 
@@ -155,7 +155,7 @@ import type { ChartPanelData } from "@/types/dashboard";
 
 export const cityDistributionPanel: ChartPanelData = {
   id: "v9100-v9500-combined",
-  title: "项目直发现场虚拟库(9100)/非项目直发虚拟库(9500)库存按单位分布情况",
+  title: "项目直发现场库/非项目直发库库存按单位分布情况",
   type: "bar",
   stacked: false,
   chart: cityDistributionChart,
@@ -230,7 +230,7 @@ export const city9300DistributionChart: ChartDataSet = {
 
 export const city9300DistributionPanel: ChartPanelData = {
   id: "v9300-city",
-  title: "物资借用虚拟库(9300)库存按单位分布情况",
+  title: "物资借用库库存按单位分布情况",
   type: "bar",
   stacked: false,
   chart: city9300DistributionChart,
@@ -255,7 +255,7 @@ export const borrowedOver180DaysChart: ChartDataSet = {
 
 export const borrowedOver180DaysPanel: ChartPanelData = {
   id: "v9300-borrowed",
-  title: "物资借用虚拟库(9300) 物资按天分布情况",
+  title: "物资借用库物资按天分布情况",
   type: "line",
   chart: borrowedOver180DaysChart,
   className: "h-full",
