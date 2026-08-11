@@ -18,7 +18,14 @@ export const leftNavigation: NavigationItem[] = [
 
 export const rightNavigation: NavigationItem[] = [
   { id: "site", label: "项目现场库", href: "/site", active: false },
-  { id: "station", label: "综合材料站", href: "/station", active: false },
+  { 
+    id: "station", 
+    label: "综合材料站", 
+    href: "https://liaoning-industrial-intelligence.pages.dev/", 
+    active: false,
+    isExternal: true,
+    target: "_blank"
+  },
   { id: "special", label: "专业仓", href: "/special", active: false }
 ];
 

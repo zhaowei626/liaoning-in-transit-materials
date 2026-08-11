@@ -162,7 +162,12 @@ export function HomePageClient() {
           </Link>
 
           {/* Node 4: 综合材料站 (Middle Right) */}
-          <Link href="/station" className="absolute top-[380px] right-[50px] group z-10 w-[320px] hover:-translate-y-2 transition-transform duration-300">
+          <a 
+            href="https://liaoning-industrial-intelligence.pages.dev/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="absolute top-[380px] right-[50px] group z-10 w-[320px] hover:-translate-y-2 transition-transform duration-300"
+          >
             <div className="bg-panelStrong border border-cyanLine/50 rounded-lg p-4 shadow-[0_0_20px_rgba(0,242,255,0.1)] relative overflow-hidden backdrop-blur-md">
               <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-cyanCore to-transparent"></div>
               <div className="flex items-center gap-3 mb-4">
@@ -198,7 +203,7 @@ export function HomePageClient() {
                 </div>
               </div>
             </div>
-          </Link>
+          </a>
 
           {/* Node 5: 专业仓 (Bottom) */}
           <Link href="/special" className="absolute bottom-[100px] left-1/2 -translate-x-1/2 group z-10 w-[320px] hover:-translate-y-2 transition-transform duration-300">
@@ -236,9 +241,15 @@ export function HomePageClient() {
               工程监控
             </button>
           </Link>
-          <button className="px-8 py-2 rounded-full border border-cyanCore/60 bg-panelStrong text-cyanCore font-semibold hover:bg-cyanCore/20 hover:shadow-[0_0_15px_rgba(0,242,255,0.4)] transition-all">
-            甘特图
-          </button>
+          <a 
+            href="https://liaoning-gantt.pages.dev/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <button className="px-8 py-2 rounded-full border border-cyanCore/60 bg-panelStrong text-cyanCore font-semibold hover:bg-cyanCore/20 hover:shadow-[0_0_15px_rgba(0,242,255,0.4)] transition-all">
+              甘特图
+            </button>
+          </a>
         </div>
       </main>
     </>

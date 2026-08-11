@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { SectionTitle } from "@/components/SectionTitle";
@@ -9,7 +11,7 @@ import { SupplierTopList } from "@/components/SupplierTopList";
 
 // 禁用 SSR 以避免 Chart.js 的水和问题
 const DashboardChart = dynamic(
-  () => import("@/components/DashboardChart").then((mod) => mod.DashboardChart),
+  () => import("./DashboardChart").then((mod) => mod.DashboardChart),
   { ssr: false }
 );
 

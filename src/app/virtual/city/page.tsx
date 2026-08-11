@@ -1,7 +1,7 @@
 "use client";
 
-import MainHeader from "../../../components/MainHeader";
-import { FooterRail } from "../../../components/FooterRail";
+import MainHeader from "@/components/MainHeader";
+import { FooterRail } from "@/components/FooterRail";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import Link from "next/link";
@@ -10,8 +10,8 @@ import {
   virtualDataChangePanel,
   borrowedOver180DaysPanel,
 } from "@/data/virtualData";
-import { VirtualKpiCard } from "../../../components/VirtualKpiCard";
-import { ChartPanel } from "../../../components/ChartPanel";
+import { VirtualKpiCard } from "@/components/VirtualKpiCard";
+import { ChartPanel } from "@/components/ChartPanel";
 import { Calendar, ChevronDown, Filter } from "lucide-react";
 import type { ChartDataSet, ChartPanelData } from "@/types/dashboard";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import MainHeader from "../../components/MainHeader";
-import { FooterRail } from "../../components/FooterRail";
+import MainHeader from "@/components/MainHeader";
+import { FooterRail } from "@/components/FooterRail";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
 import Link from "next/link";
@@ -15,8 +15,8 @@ import {
   city9300DistributionPanel,
   borrowedOver180DaysPanel,
 } from "@/data/virtualData";
-import { VirtualKpiCard } from "../../components/VirtualKpiCard";
-import { ChartPanel } from "../../components/ChartPanel";
+import { VirtualKpiCard } from "@/components/VirtualKpiCard";
+import { ChartPanel } from "@/components/ChartPanel";
 import { useEffect, useState, useRef } from "react";
 import { Calendar, ChevronDown, Filter, Check } from "lucide-react";
 

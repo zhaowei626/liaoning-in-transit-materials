@@ -15,6 +15,8 @@ export interface NavigationItem {
   label: string;
   href: string;
   active: boolean;
+  isExternal?: boolean;
+  target?: "_blank" | "_self";
 }
 
 export interface DateRangeFilter {
