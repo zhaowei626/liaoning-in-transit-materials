@@ -312,18 +312,6 @@ export default function ProjectMonitoringPage() {
                   <div className="h-full bg-green-500 w-full" />
                 </div>
               </div>
-
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-end">
-                  <span className="text-sm font-semibold text-slate-200">施工进度测算</span>
-                  <span className="text-xs text-slate-300">524.24万/1124.24万</span>
-                </div>
-                <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700 relative">
-                  <div className="h-full bg-amberCore w-[46.6%] relative">
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,191,0,0.8)] translate-x-1.5" />
-                  </div>
-                </div>
-              </div>
             </div>
           </TechPanel>
         </div>
@@ -358,9 +346,9 @@ export default function ProjectMonitoringPage() {
             />
             <StepDivider />
             <StepItem 
-              title="供应计划生效" 
+              title="合同签订" 
               icon={<FileCheck className="w-5 h-5 text-cyanCore" />} 
-              data={[{label: "生效计划", value: 231, unit: "条"}, {label: "涉及金额", value: "924.24", unit: "万元"}]}
+              data={[{label: "签订合同", value: 231, unit: "份"}, {label: "涉及金额", value: "924.24", unit: "万元"}]}
             />
             <StepDivider />
             <StepItem 
@@ -379,15 +367,21 @@ export default function ProjectMonitoringPage() {
         </TechPanel>
 
         {/* 虚线连接区 (第二排到第三排) */}
-        <div className="h-4 w-full relative flex justify-around">
-          <div className="w-px h-full border-l border-dashed border-cyanCore/40 relative left-[-16.6%]">
-             <ArrowDown className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-cyanCore w-4 h-4" />
+        <div className="h-4 w-full relative grid grid-cols-3 gap-4">
+          <div className="flex justify-center h-full">
+            <div className="w-px h-full border-l border-dashed border-cyanCore/40 relative">
+               <ArrowDown className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-cyanCore w-4 h-4" />
+            </div>
           </div>
-          <div className="w-px h-full border-l border-dashed border-cyanCore/40 relative">
-             <ArrowDown className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-cyanCore w-4 h-4" />
+          <div className="flex justify-center h-full">
+            <div className="w-px h-full border-l border-dashed border-cyanCore/40 relative">
+               <ArrowDown className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-cyanCore w-4 h-4" />
+            </div>
           </div>
-          <div className="w-px h-full border-l border-dashed border-cyanCore/40 relative right-[-16.6%]">
-             <ArrowDown className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-cyanCore w-4 h-4" />
+          <div className="flex justify-center h-full">
+            <div className="w-px h-full border-l border-dashed border-cyanCore/40 relative">
+               <ArrowDown className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-cyanCore w-4 h-4" />
+            </div>
           </div>
         </div>
 
@@ -414,31 +408,23 @@ export default function ProjectMonitoringPage() {
         </div>
 
         {/* 第五排 库节点 */}
-        <div className="grid grid-cols-4 gap-4 mt-1">
-          <NodeCard 
-            title="退实体库" 
-            icon={<Undo2 className="w-6 h-6 text-cyanCore" />} 
-            data={[{label: "退实体库物资", value: 21, unit: "条"}, {label: "退实体库金额", value: "0.24", unit: "万元"}]} 
-            onClick={() => setSelectedNodeType("退实体库")}
-          />
-          <NodeCard 
-            title="转备品备件" 
-            icon={<Settings className="w-6 h-6 text-cyanCore" />} 
-            data={[{label: "转备品物资", value: 45, unit: "条"}, {label: "涉及金额", value: "12.45", unit: "万元"}]} 
-            onClick={() => setSelectedNodeType("转备品备件")}
-          />
-          <NodeCard 
-            title="报废物资" 
-            icon={<Trash2 className="w-6 h-6 text-cyanCore" />} 
-            data={[{label: "报废物资", value: 12, unit: "条"}, {label: "涉及金额", value: "3.12", unit: "万元"}]} 
-            onClick={() => setSelectedNodeType("报废物资")}
-          />
-          <NodeCard 
-            title="项目间再利用" 
-            icon={<Recycle className="w-6 h-6 text-cyanCore" />} 
-            data={[{label: "再利用物资", value: 123, unit: "条"}, {label: "周转金额", value: "4.24", unit: "万元"}]} 
-            onClick={() => setSelectedNodeType("项目间再利用")}
-          />
+        <div className="flex justify-center gap-4 mt-1">
+          <div className="w-[calc((100%-3rem)/4)]">
+            <NodeCard 
+              title="退实体库" 
+              icon={<Undo2 className="w-6 h-6 text-cyanCore" />} 
+              data={[{label: "退实体库物资", value: 21, unit: "条"}, {label: "退实体库金额", value: "0.24", unit: "万元"}]} 
+              onClick={() => setSelectedNodeType("退实体库")}
+            />
+          </div>
+          <div className="w-[calc((100%-3rem)/4)]">
+            <NodeCard 
+              title="项目间再利用" 
+              icon={<Recycle className="w-6 h-6 text-cyanCore" />} 
+              data={[{label: "再利用物资", value: 123, unit: "条"}, {label: "周转金额", value: "4.24", unit: "万元"}]} 
+              onClick={() => setSelectedNodeType("项目间再利用")}
+            />
+          </div>
         </div>
 
       </main>
