@@ -277,8 +277,8 @@ export default function ProjectMonitoringPage() {
                   <span className="text-sm text-slate-100 font-medium">1622SY21001L</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-400 whitespace-nowrap">单位部门：</span>
-                  <span className="text-sm text-slate-100 font-medium">沈阳公司·基建部</span>
+                  <span className="text-sm text-slate-400 whitespace-nowrap">管理单位：</span>
+                  <span className="text-sm text-slate-100 font-medium">沈阳公司</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-slate-400 whitespace-nowrap">电压等级：</span>
@@ -289,7 +289,7 @@ export default function ProjectMonitoringPage() {
                   <span className="text-sm text-slate-100 font-medium">2025/03/20</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-400 whitespace-nowrap">竣工时间：</span>
+                  <span className="text-sm text-slate-400 whitespace-nowrap">投产时间：</span>
                   <span className="text-sm text-slate-100 font-medium">2026/03/15</span>
                 </div>
               </div>
