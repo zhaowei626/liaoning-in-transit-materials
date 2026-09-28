@@ -142,6 +142,14 @@ export default function ProjectMonitoringPage() {
     <div className="dashboard-shell min-h-screen w-full overflow-x-hidden p-dashboard text-slate-100 dark:text-slate-100">
       <MainHeader clock={clock} title={dashboardTitle} />
       
+      {/* 副标题及更新时间 */}
+      <div className="relative flex items-center justify-center mb-4 mt-2">
+        <h2 className="text-xl font-bold text-cyanCore tracking-widest text-shadow-sm">重点基建工程履约情况</h2>
+        <div className="absolute right-0 text-sm text-slate-400 font-mono" suppressHydrationWarning>
+          数据更新时间：{new Date().getFullYear()}-{String(new Date().getMonth() + 1).padStart(2, '0')}-{String(new Date().getDate()).padStart(2, '0')}
+        </div>
+      </div>
+
       {/* 搜索区域 */}
       <TechPanel className="mb-4 flex items-end justify-between gap-6 p-4 relative z-30">
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-[12rem_10rem_10rem_20rem]">
@@ -231,27 +239,6 @@ export default function ProjectMonitoringPage() {
             )}
           </div>
         </div>
-        <div className="flex shrink-0 items-end gap-3 pb-1">
-          <button
-            className="h-9 min-w-20 rounded-dashboard border border-cyanLine bg-cyanCore/20 px-5 text-sm font-bold text-cyanCore transition-colors hover:bg-cyanCore/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyanCore dark:border-cyanLine dark:bg-cyanCore/20 dark:text-cyanCore"
-            type="button"
-          >
-            搜索
-          </button>
-          <button
-            className="h-9 min-w-20 rounded-dashboard border border-slate-600 bg-slateGlass px-5 text-sm font-bold text-inkMuted transition-colors hover:bg-slate-700/60 hover:text-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-400 dark:border-slate-600 dark:bg-slateGlass dark:text-inkMuted"
-            type="button"
-            onClick={() => {
-              setSelectedUnit("全部");
-              setSelectedYear("全部");
-              setSelectedVoltage("全部");
-              setSelectedProject(PROJECTS[0]);
-              setProjectSearch("");
-            }}
-          >
-            重置
-          </button>
-        </div>
       </TechPanel>
 
       {/* 主体内容 */}
@@ -259,7 +246,7 @@ export default function ProjectMonitoringPage() {
         {/* 第一排 */}
         <div className="grid grid-cols-2 gap-4">
           {/* 项目信息 */}
-          <TechPanel className="p-3 h-[231px]">
+          <TechPanel className="p-3 h-[180px]">
             <div className="mb-3 flex items-center justify-between">
               <SectionTitle title="项目信息" />
             </div>
@@ -284,6 +271,18 @@ export default function ProjectMonitoringPage() {
                   <span className="text-sm text-slate-400 whitespace-nowrap">电压等级：</span>
                   <span className="text-sm text-slate-100 font-medium">66kV</span>
                 </div>
+              </div>
+            </div>
+          </TechPanel>
+
+          {/* 项目进度 */}
+          <TechPanel className="p-3 flex flex-col h-[180px]">
+            <div className="mb-4 flex items-center justify-between">
+              <SectionTitle title="项目进度" />
+            </div>
+            
+            <div className="flex-1 flex flex-col justify-center gap-6">
+              <div className="flex gap-6">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-slate-400 whitespace-nowrap">开工时间：</span>
                   <span className="text-sm text-slate-100 font-medium">2025/03/20</span>
@@ -293,16 +292,6 @@ export default function ProjectMonitoringPage() {
                   <span className="text-sm text-slate-100 font-medium">2026/03/15</span>
                 </div>
               </div>
-            </div>
-          </TechPanel>
-
-          {/* 项目进度 */}
-          <TechPanel className="p-3 flex flex-col h-[231px]">
-            <div className="mb-4 flex items-center justify-between">
-              <SectionTitle title="项目进度" />
-            </div>
-            
-            <div className="flex-1 flex flex-col justify-center gap-6">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-end">
                   <span className="text-sm font-semibold text-slate-200">物资供货进度</span>

@@ -4,7 +4,6 @@ import MainHeader from "@/components/MainHeader";
 import { FooterRail } from "@/components/FooterRail";
 import { dashboardTitle } from "@/data/mockData";
 import { useClock } from "@/hooks/useClock";
-import Link from "next/link";
 import { 
   virtualKpis, 
   cityDistributionPanel, 
@@ -18,7 +17,8 @@ import {
 import { VirtualKpiCard } from "@/components/VirtualKpiCard";
 import { ChartPanel } from "@/components/ChartPanel";
 import { useEffect, useState, useRef } from "react";
-import { Calendar, ChevronDown, Filter, Check } from "lucide-react";
+import { Calendar, ChevronDown, Filter, Check, MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const VIRTUAL_WAREHOUSE_TYPES = [
   { id: 'all', label: '全部' },
@@ -28,6 +28,11 @@ const VIRTUAL_WAREHOUSE_TYPES = [
   { id: '9500', label: '非项目直发虚拟库 (9500)' },
   { id: '9700', label: '废旧物资现场虚拟库 (9700)' },
   { id: '9800', label: '废旧物资拆解暂存库 (9800)' },
+];
+
+const LIAONING_CITIES = [
+  "辽宁省", "沈阳", "大连", "鞍山", "抚顺", "本溪", "丹东", 
+  "锦州", "营口", "阜新", "辽阳", "盘锦", "铁岭", "朝阳", "葫芦岛"
 ];
 
 function ChartFilters({ 
@@ -116,7 +121,31 @@ function ChartFilters({
 
 export default function VirtualWarehousePage() {
   const clock = useClock();
+  const router = useRouter();
   const [selectedWarehouseType, setSelectedWarehouseType] = useState('all');
+  const [selectedCity, setSelectedCity] = useState('辽宁省');
+  const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
+  const cityDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (cityDropdownRef.current && !cityDropdownRef.current.contains(event.target as Node)) {
+        setIsCityDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleCityChange = (city: string) => {
+    setSelectedCity(city);
+    setIsCityDropdownOpen(false);
+    if (city === '辽宁省') {
+      router.push('/virtual');
+    } else {
+      router.push(`/virtual/city?name=${encodeURIComponent(city)}`);
+    }
+  };
 
   // 根据选中的类型动态切换图表数据
   const isQuantityType = ['9700', '9800'].includes(selectedWarehouseType);
@@ -149,13 +178,42 @@ export default function VirtualWarehousePage() {
       
       <main className="flex-1 flex flex-col gap-4 mt-8">
         {/* Header meta info */}
-        <div className="flex justify-end px-1 mb-2">
-          <Link 
-            href="/virtual/city"
-            className="text-sm font-medium text-cyanCore/80 bg-cyanCore/10 px-3 py-1 rounded-full border border-cyanCore/20 hover:bg-cyanCore/20 transition-colors cursor-pointer"
-          >
+        <div className="flex justify-between items-center px-1 mb-2">
+          {/* 左侧：单位选择 */}
+          <div className="relative" ref={cityDropdownRef}>
+            <div 
+              className="flex items-center gap-2 bg-slate-800/40 px-3 py-1.5 rounded-lg border border-slate-700/50 cursor-pointer hover:border-cyanCore/50 transition-colors group"
+              onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
+            >
+              <MapPin className="w-4 h-4 text-cyanCore" />
+              <span className="text-sm font-medium text-slate-200 group-hover:text-cyanCore transition-colors">{selectedCity}</span>
+              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isCityDropdownOpen ? 'rotate-180' : ''}`} />
+            </div>
+
+            {isCityDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-50 py-1 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 max-h-60 overflow-y-auto custom-scrollbar">
+                {LIAONING_CITIES.map((city) => (
+                  <div
+                    key={city}
+                    className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                      selectedCity === city 
+                        ? 'bg-cyanCore/20 text-cyanCore' 
+                        : 'text-slate-300 hover:bg-slate-700/50'
+                    }`}
+                    onClick={() => handleCityChange(city)}
+                  >
+                    <span>{city}</span>
+                    {selectedCity === city && <Check className="w-4 h-4" />}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 右侧：数据更新日期 */}
+          <div className="text-sm font-medium text-cyanCore/80 bg-cyanCore/10 px-3 py-1 rounded-full border border-cyanCore/20 cursor-default">
             数据更新日期：2026-08-02
-          </Link>
+          </div>
         </div>
 
         {/* First Row: KPI Cards */}
