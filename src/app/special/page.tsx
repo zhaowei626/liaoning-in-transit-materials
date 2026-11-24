@@ -1,7 +1,7 @@
 "use client";
 
-import { DashboardPage } from "@/components/DashboardPage";
+import { SpecialDashboardPage } from "@/components/SpecialDashboardPage";
 
 export default function SpecialPage() {
-  return <DashboardPage />;
+  return <SpecialDashboardPage />;
 }
