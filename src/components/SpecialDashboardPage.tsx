@@ -12,6 +12,9 @@ import { dashboardTitle } from "@/data/mockData";
 import { MousePointer2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SpecialMaterialDetailsModal } from "@/components/SpecialMaterialDetailsModal";
+import { SpecialWarehouseDetailsModal } from "@/components/SpecialWarehouseDetailsModal";
+import { MaterialEntryDetailsModal } from "@/components/MaterialEntryDetailsModal";
+import { MaterialOutboundDetailsModal } from "@/components/MaterialOutboundDetailsModal";
 
 // 顶部 5 个卡片的数据类型
 interface TopCard {
@@ -107,7 +110,10 @@ const warehouseStorageChartData = {
 
 export function SpecialDashboardPage() {
   const clock = useClock();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
+  const [isWarehouseModalOpen, setIsWarehouseModalOpen] = useState(false);
+  const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
+  const [isOutboundModalOpen, setIsOutboundModalOpen] = useState(false);
 
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -128,14 +134,23 @@ export function SpecialDashboardPage() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {topCards.map((card, idx) => {
             const toneClass = card.tone === "amber" ? "text-amberCore" : "text-cyanCore";
+            const isClickable = idx === 0 || idx === 2 || idx === 3 || idx === 4;
             const isFirst = idx === 0;
+            
+            const handleCardClick = () => {
+              if (idx === 0) setIsMaterialModalOpen(true);
+              if (idx === 2) setIsWarehouseModalOpen(true);
+              if (idx === 3) setIsEntryModalOpen(true);
+              if (idx === 4) setIsOutboundModalOpen(true);
+            };
+
             return (
               <TechPanel 
                 key={idx} 
-                className={`flex flex-col p-4 min-h-[140px] cursor-pointer hover:bg-slate-800/20 transition-colors group ${
+                className={`flex flex-col p-4 min-h-[140px] ${isClickable ? "cursor-pointer hover:bg-slate-800/20" : ""} transition-colors group ${
                   isFirst ? "border-cyanCore/40 bg-cyanCore/5" : ""
                 }`}
-                onClick={isFirst ? () => setIsModalOpen(true) : undefined}
+                onClick={isClickable ? handleCardClick : undefined}
               >
                 <div className="flex items-start justify-between mb-2">
                   <h3 className={`font-bold truncate flex-1 ${
@@ -261,8 +276,26 @@ export function SpecialDashboardPage() {
 
       {/* 在仓物资详情弹窗 */}
       <SpecialMaterialDetailsModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isMaterialModalOpen} 
+        onClose={() => setIsMaterialModalOpen(false)} 
+      />
+
+      {/* 专业仓详情弹窗 */}
+      <SpecialWarehouseDetailsModal 
+        isOpen={isWarehouseModalOpen} 
+        onClose={() => setIsWarehouseModalOpen(false)} 
+      />
+
+      {/* 物资入仓详情弹窗 */}
+      <MaterialEntryDetailsModal 
+        isOpen={isEntryModalOpen} 
+        onClose={() => setIsEntryModalOpen(false)} 
+      />
+
+      {/* 物资出仓详情弹窗 */}
+      <MaterialOutboundDetailsModal 
+        isOpen={isOutboundModalOpen} 
+        onClose={() => setIsOutboundModalOpen(false)} 
       />
     </div>
   );
